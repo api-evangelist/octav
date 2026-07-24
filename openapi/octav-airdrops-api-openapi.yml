@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Airdrops
+  description: Airdrop eligibility endpoints
+paths:
+  /airdrop:
+    get:
+      summary: Airdrop
+      description: 'Check airdrop eligibility (Solana only).
+
+
+        **Cost:** 1 credit per call
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getAirdrop
+      tags:
+      - Airdrops
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: Solana wallet address to check for airdrops
+        schema:
+          type: string
+        example: J8fo6fHGTD4egvuFE4RRQaBipfcHy5F5YVCcZmmZG6gR
+      responses:
+        '200':
+          description: Successful response
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

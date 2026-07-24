@@ -1,0 +1,842 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Beacon Validators API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Beacon Validators
+  description: Ethereum beacon chain validator endpoints — details, rewards, withdrawals, and deposits (mainnet only)
+paths:
+  /beacon/validators/details/index/{index}:
+    get:
+      summary: Validator Details by Index
+      description: 'Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its index.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorDetailsByIndex
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: index
+        in: path
+        required: true
+        description: Non-negative validator index
+        schema:
+          type: integer
+          minimum: 0
+        example: 123456
+      responses:
+        '200':
+          description: Validator details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+  /beacon/validators/details/pubkey/{pubkey}:
+    get:
+      summary: Validator Details by Pubkey
+      description: 'Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its BLS pubkey.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorDetailsByPubkey
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: pubkey
+        in: path
+        required: true
+        description: 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.
+        schema:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{96}$
+        example: '0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07'
+      responses:
+        '200':
+          description: Validator details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+  /beacon/validators/rewards/index/{index}:
+    get:
+      summary: Validator Rewards by Index
+      description: 'Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by index.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorRewardsByIndex
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: index
+        in: path
+        required: true
+        description: Non-negative validator index
+        schema:
+          type: integer
+          minimum: 0
+        example: 123456
+      - name: rangeType
+        in: query
+        required: true
+        description: Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs).
+        schema:
+          type: string
+          enum:
+          - timestamp
+          - epoch
+        example: timestamp
+      - name: rangeFrom
+        in: query
+        required: true
+        description: Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType.
+        schema:
+          type: integer
+          minimum: 0
+        example: 1704067200
+      - name: rangeTo
+        in: query
+        required: true
+        description: End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType.
+        schema:
+          type: integer
+          minimum: 0
+        example: 1706745600
+      - name: granularity
+        in: query
+        required: true
+        description: Bucket size for aggregation.
+        schema:
+          type: string
+          enum:
+          - epoch
+          - day
+          - week
+          - month
+        example: day
+      - name: offset
+        in: query
+        required: false
+        description: Pagination offset.
+        schema:
+          type: number
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        description: Number of records to return. Max 10.
+        schema:
+          type: number
+          default: 10
+          maximum: 10
+      responses:
+        '200':
+          description: Paginated validator rewards
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedValidatorRewards'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+  /beacon/validators/rewards/pubkey/{pubkey}:
+    get:
+      summary: Validator Rewards by Pubkey
+      description: 'Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by BLS pubkey.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorRewardsByPubkey
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: pubkey
+        in: path
+        required: true
+        description: 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.
+        schema:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{96}$
+        example: '0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07'
+      - name: rangeType
+        in: query
+        required: true
+        description: Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs).
+        schema:
+          type: string
+          enum:
+          - timestamp
+          - epoch
+        example: timestamp
+      - name: rangeFrom
+        in: query
+        required: true
+        description: Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType.
+        schema:
+          type: integer
+          minimum: 0
+        example: 1704067200
+      - name: rangeTo
+        in: query
+        required: true
+        description: End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType.
+        schema:
+          type: integer
+          minimum: 0
+        example: 1706745600
+      - name: granularity
+        in: query
+        required: true
+        description: Bucket size for aggregation.
+        schema:
+          type: string
+          enum:
+          - epoch
+          - day
+          - week
+          - month
+        example: day
+      - name: offset
+        in: query
+        required: false
+        description: Pagination offset.
+        schema:
+          type: number
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        description: Number of records to return. Max 10.
+        schema:
+          type: number
+          default: 10
+          maximum: 10
+      responses:
+        '200':
+          description: Paginated validator rewards
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedValidatorRewards'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+  /beacon/validators/withdrawals/index/{index}:
+    get:
+      summary: Validator Withdrawals by Index
+      description: 'Paginated list of withdrawals processed for a validator by index.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorWithdrawalsByIndex
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: index
+        in: path
+        required: true
+        description: Non-negative validator index
+        schema:
+          type: integer
+          minimum: 0
+        example: 123456
+      - name: offset
+        in: query
+        required: false
+        description: Pagination offset.
+        schema:
+          type: number
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        description: Number of records to return. Max 10.
+        schema:
+          type: number
+          default: 10
+          maximum: 10
+      responses:
+        '200':
+          description: Paginated validator withdrawals
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedValidatorWithdrawals'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+  /beacon/validators/withdrawals/pubkey/{pubkey}:
+    get:
+      summary: Validator Withdrawals by Pubkey
+      description: 'Paginated list of withdrawals processed for a validator by BLS pubkey.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorWithdrawalsByPubkey
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: pubkey
+        in: path
+        required: true
+        description: 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.
+        schema:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{96}$
+        example: '0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07'
+      - name: offset
+        in: query
+        required: false
+        description: Pagination offset.
+        schema:
+          type: number
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        description: Number of records to return. Max 10.
+        schema:
+          type: number
+          default: 10
+          maximum: 10
+      responses:
+        '200':
+          description: Paginated validator withdrawals
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedValidatorWithdrawals'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+  /beacon/validators/deposits/index/{index}:
+    get:
+      summary: Validator Deposits by Index
+      description: 'Paginated list of deposits made to a validator by index.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorDepositsByIndex
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: index
+        in: path
+        required: true
+        description: Non-negative validator index
+        schema:
+          type: integer
+          minimum: 0
+        example: 123456
+      - name: offset
+        in: query
+        required: false
+        description: Pagination offset.
+        schema:
+          type: number
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        description: Number of records to return. Max 10.
+        schema:
+          type: number
+          default: 10
+          maximum: 10
+      responses:
+        '200':
+          description: Paginated validator deposits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedValidatorDeposits'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+  /beacon/validators/deposits/pubkey/{pubkey}:
+    get:
+      summary: Validator Deposits by Pubkey
+      description: 'Paginated list of deposits made to a validator by BLS pubkey.
+
+
+        **Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.
+
+
+        **Access:** Requires portfolio entitlement.
+
+
+        **Rate limit:** 360 req/min (shared with portfolio bucket)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getValidatorDepositsByPubkey
+      tags:
+      - Beacon Validators
+      parameters:
+      - name: pubkey
+        in: path
+        required: true
+        description: 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.
+        schema:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{96}$
+        example: '0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07'
+      - name: offset
+        in: query
+        required: false
+        description: Pagination offset.
+        schema:
+          type: number
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        description: Number of records to return. Max 10.
+        schema:
+          type: number
+          default: 10
+          maximum: 10
+      responses:
+        '200':
+          description: Paginated validator deposits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedValidatorDeposits'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/BeaconForbidden'
+        '404':
+          $ref: '#/components/responses/ValidatorNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+components:
+  responses:
+    InternalServerError:
+      description: Upstream beacon data error.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Error fetching validator details
+    Unauthorized:
+      description: Missing or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+    ValidatorNotFound:
+      description: Validator does not exist on mainnet.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Validator not found for index 99999999
+    BadRequest:
+      description: Input validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    BeaconForbidden:
+      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Beacon access requires enterprise subscription. Contact sales.
+  schemas:
+    ValidatorDeposit:
+      type: object
+      properties:
+        slot:
+          type: number
+          description: Slot in which the deposit was included
+        epoch:
+          type: number
+          description: Epoch containing the slot
+        timestamp:
+          type: number
+          description: Unix timestamp of the deposit
+        amount:
+          type: string
+          description: Deposited amount in wei
+        depositIndex:
+          type: number
+          description: Global deposit contract index
+        withdrawalCredentials:
+          type: string
+          description: Full withdrawal credential hex string
+        withdrawalAddress:
+          type: string
+          nullable: true
+          description: EVM withdrawal address (0x01 prefix only, otherwise null)
+    PaginatedValidatorWithdrawals:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorWithdrawal'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of withdrawals
+        pages:
+          type: number
+          description: Total number of pages
+    PaginatedValidatorDeposits:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorDeposit'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of deposits
+        pages:
+          type: number
+          description: Total number of pages
+    PaginatedValidatorRewards:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorRewardSummary'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of matching buckets
+        pages:
+          type: number
+          description: Total number of pages
+    ValidatorDetails:
+      type: object
+      properties:
+        validator:
+          type: object
+          properties:
+            index:
+              type: number
+              description: Validator index
+            pubkey:
+              type: string
+              description: BLS pubkey (lowercase 0x-prefixed)
+            slashed:
+              type: boolean
+              description: Whether the validator has been slashed
+            status:
+              type: string
+              description: Validator lifecycle status
+              enum:
+              - pending
+              - active_ongoing
+              - active_exiting
+              - active_slashed
+              - exited_unslashed
+              - exited_slashed
+              - withdrawal_possible
+              - withdrawal_done
+        lifecycle:
+          type: object
+          properties:
+            activationEpoch:
+              type: number
+              nullable: true
+              description: Epoch when the validator became active
+            activationTimestamp:
+              type: number
+              nullable: true
+              description: Unix timestamp of activation
+            exitEpoch:
+              type: number
+              nullable: true
+              description: Epoch when the validator exited or will exit
+            withdrawableEpoch:
+              type: number
+              nullable: true
+              description: Epoch when withdrawal becomes possible
+        balance:
+          type: object
+          properties:
+            actual:
+              type: string
+              description: Current balance in wei
+            effective:
+              type: string
+              description: Effective balance in wei (used for reward/penalty calculations)
+        withdrawalCredentials:
+          type: object
+          properties:
+            prefix:
+              type: number
+              description: Credential prefix byte (0 = BLS, 1 = EVM address)
+            credential:
+              type: string
+              description: Full credential hex string
+            address:
+              type: string
+              nullable: true
+              description: EVM withdrawal address (0x01 prefix only, otherwise null)
+    ValidatorWithdrawal:
+      type: object
+      properties:
+        slot:
+          type: number
+          description: Slot in which the withdrawal was processed
+        epoch:
+          type: number
+          description: Epoch containing the slot
+        timestamp:
+          type: number
+          description: Unix timestamp of the withdrawal
+        amount:
+          type: string
+          description: Withdrawn amount in wei
+        address:
+          type: string
+          description: EVM address that received the withdrawal
+        index:
+          type: number
+          description: Validator index
+    ValidatorRewardSummary:
+      type: object
+      properties:
+        epochStart:
+          type: number
+          description: First epoch in this bucket
+        epochEnd:
+          type: number
+          description: Last epoch in this bucket
+        timestampStart:
+          type: number
+          description: Unix timestamp of bucket start
+        timestampEnd:
+          type: number
+          description: Unix timestamp of bucket end
+        dateStart:
+          type: string
+          description: ISO date string of bucket start
+        dateEnd:
+          type: string
+          description: ISO date string of bucket end
+        consensusReward:
+          type: string
+          description: Consensus layer reward in wei
+        consensusPotentialReward:
+          type: string
+          description: Maximum possible consensus reward in wei
+        consensusEfficiency:
+          type: number
+          nullable: true
+          description: Ratio of actual to potential consensus reward (0–1), or null if not computable
+        executionReward:
+          type: string
+          description: Execution layer (MEV + tips) reward in wei
+        attestationsIncluded:
+          type: number
+          description: Number of attestations included on-chain
+        attestationsMissed:
+          type: number
+          description: Number of attestations missed
+        syncParticipations:
+          type: number
+          description: Sync committee participations
+        syncMissed:
+          type: number
+          description: Sync committee slots missed
+        proposedBlocks:
+          type: number
+          description: Blocks proposed
+        missedBlocks:
+          type: number
+          description: Block proposals missed
+        mevBlocks:
+          type: number
+          description: Blocks proposed with MEV
+        endEffectiveBalance:
+          type: string
+          description: Effective balance at end of bucket in wei
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

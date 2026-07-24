@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Sync API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Sync
+  description: Data synchronization endpoints
+paths:
+  /sync-transactions:
+    post:
+      summary: Sync Transactions
+      description: 'Manually trigger transaction synchronization for an address.
+
+
+        **Cost:** 1 credit + 1 credit per 250 transactions indexed
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: syncWallet
+      tags:
+      - Sync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addresses:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of addresses to sync (currently supports 1 address)
+              required:
+              - addresses
+              example:
+                addresses:
+                - '0x6426af179aabebe47666f345d69fd9079673f6cd'
+      responses:
+        '200':
+          description: Sync initiated successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Address is syncing
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Contract Protocol API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Contract Protocol
+  description: Resolve a contract address to its DeFi protocol
+paths:
+  /contract-protocol:
+    get:
+      summary: Contract Protocol
+      description: 'Look up which DeFi protocol a contract address belongs to. Provide a `chain` to resolve a single protocol on that chain, or omit it to search by address across all chains.
+
+
+        **Cost:** 5 credits per lookup. The credits are refunded if no protocol is found (404).
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getContractProtocol
+      tags:
+      - Contract Protocol
+      parameters:
+      - name: contract
+        in: query
+        required: true
+        description: The contract address to look up (EVM `0x…` or Solana base58).
+        schema:
+          type: string
+        example: '0x1f98431c8ad98523631ae4a59f267346ea31f984'
+      - name: chain
+        in: query
+        required: false
+        description: Chain key (e.g. `ethereum`, `arbitrum`, `base`, `polygon`, `solana`). If omitted, the endpoint returns every chain the address is known on.
+        schema:
+          type: string
+        example: ethereum
+      responses:
+        '200':
+          description: Protocol match. Returns a single `{ protocol }` object when `chain` is provided, or a `{ protocols }` array (each entry tagged with its `chainKey`) when `chain` is omitted. The array is unordered.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  description: Returned when `chain` is provided (single match)
+                  properties:
+                    protocol:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Protocol display name
+                          example: Uniswap V3
+                        key:
+                          type: string
+                          description: Protocol key
+                          example: uniswap-v3
+                        imgSmall:
+                          type: string
+                          description: URL to small protocol icon
+                        imgLarge:
+                          type: string
+                          description: URL to large protocol icon
+                - type: object
+                  description: Returned when `chain` is omitted (all matches across chains)
+                  properties:
+                    protocols:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: Protocol display name
+                            example: Uniswap V3
+                          key:
+                            type: string
+                            description: Protocol key
+                            example: uniswap-v3
+                          imgSmall:
+                            type: string
+                            description: URL to small protocol icon
+                          imgLarge:
+                            type: string
+                            description: URL to large protocol icon
+                          chainKey:
+                            type: string
+                            description: Chain the match belongs to
+                            example: ethereum
+        '400':
+          description: Validation error — `contract` is missing
+        '401':
+          description: Missing/invalid API key or no access to the endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        '402':
+          description: Insufficient credits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  creditsNeeded:
+                    type: integer
+        '404':
+          description: No protocol match (credit refunded)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: No protocol found for contract <contract> [on <chain>]
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  retryAfter:
+                    type: integer
+        '500':
+          description: Unexpected server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Error while searching for contract protocol
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

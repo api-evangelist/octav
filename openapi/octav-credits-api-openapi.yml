@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Credits API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Credits
+  description: Credit balance endpoints
+paths:
+  /credits:
+    get:
+      summary: Credits
+      description: 'Check your API credit balance.
+
+
+        **Cost:** Free (0 credits)
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getCredits
+      tags:
+      - Credits
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  credits:
+                    type: number
+                    description: Remaining API credits
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

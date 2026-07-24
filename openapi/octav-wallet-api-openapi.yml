@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Wallet API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Wallet
+  description: Wallet information endpoints
+paths:
+  /wallet:
+    get:
+      summary: Wallet
+      description: 'Get wallet balance and basic information.
+
+
+        **Cost:** 1 credit per call
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getWallet
+      tags:
+      - Wallet
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: EVM or Solana wallet address
+        schema:
+          type: string
+        example: '0xddda947f31da53d8f9b05ab5a0bb07713c256e35'
+      responses:
+        '200':
+          description: Successful response
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

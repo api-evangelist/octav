@@ -1,0 +1,155 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Virtual Users API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Virtual Users
+  description: Virtual user management and portfolio endpoints (Pro only)
+paths:
+  /virtual-users:
+    get:
+      summary: List Virtual Users
+      description: 'List all virtual users belonging to the authenticated API user. Requires a Pro subscription — virtual users are created in the [Octav Pro](https://pro.octav.fi) app.
+
+
+        **Cost:** 1 credit per call
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: listVirtualUsers
+      tags:
+      - Virtual Users
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                      description: Virtual user identifier in virtual:<id> format
+                    type:
+                      type: string
+                      description: Virtual user type (e.g. BALANCE, CEX)
+                    label:
+                      type: string
+                      description: User-defined label
+              example:
+              - address: virtual:a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                type: BALANCE
+                label: My Virtual Portfolio
+      security:
+      - bearerAuth: []
+  /virtual-users/portfolio:
+    get:
+      summary: Virtual Users Portfolio
+      description: 'Fetch portfolios for one or more virtual users. Works identically to GET /portfolio but uses virtual user addresses. Requires a Pro subscription.
+
+
+        **Cost:** 1 credit per virtual user address
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getVirtualUsersPortfolio
+      tags:
+      - Virtual Users
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: 'Comma-separated virtual user addresses (from the list endpoint). Format: virtual:<id>. Max 10.'
+        schema:
+          type: string
+        example: virtual:a1b2c3d4-e5f6-7890-abcd-ef1234567890
+      - name: aggregated
+        in: query
+        required: false
+        description: Return a single reduced portfolio across all virtual users
+        schema:
+          type: boolean
+          default: false
+      - name: waitForSync
+        in: query
+        required: false
+        description: Wait for fresh data if cache is stale
+        schema:
+          type: boolean
+          default: false
+      - name: includeImages
+        in: query
+        required: false
+        description: Include image URLs for chains, assets, and protocols
+        schema:
+          type: boolean
+          default: false
+      - name: includeExplorerUrls
+        in: query
+        required: false
+        description: Include blockchain explorer URLs for assets and transactions
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response — same schema as GET /portfolio
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                      description: The virtual user address (virtual:<id>)
+                    networth:
+                      type: string
+                      description: Total portfolio net worth in USD
+                    cashBalance:
+                      type: string
+                      description: Available cash balance
+                    dailyIncome:
+                      type: string
+                      description: Income generated today
+                    dailyExpense:
+                      type: string
+                      description: Expenses incurred today
+                    fees:
+                      type: string
+                      description: Total fees in native asset
+                    feesFiat:
+                      type: string
+                      description: Total fees in USD
+                    lastUpdated:
+                      type: string
+                      description: Last sync timestamp (milliseconds since epoch)
+                    assetByProtocols:
+                      type: object
+                      description: Assets organized by protocol
+                    chains:
+                      type: object
+                      description: Assets organized by blockchain
+        '403':
+          description: Forbidden — one or more virtual user addresses do not belong to this account
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

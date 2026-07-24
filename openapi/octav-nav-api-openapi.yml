@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Nav API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Nav
+  description: Net Asset Value endpoints
+paths:
+  /nav:
+    get:
+      summary: Nav
+      description: 'Retrieve Net Asset Value of an address.
+
+
+        **Cost:** 1 credit per call
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getNav
+      tags:
+      - Nav
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: EVM or SOL wallet address to retrieve Net Asset Value for
+        schema:
+          type: string
+        example: '0x6426af179aabebe47666f345d69fd9079673f6cd'
+      - name: waitForSync
+        in: query
+        required: false
+        description: Wait for fresh data if cache is stale
+        schema:
+          type: boolean
+          default: false
+      - name: currency
+        in: query
+        required: false
+        description: Currency in which to return the Net Asset Value. Supports fiat and crypto conversion rates.
+        schema:
+          type: string
+          enum:
+          - USD
+          - EUR
+          - CAD
+          - AED
+          - CHF
+          - SGD
+          - ETH
+          - SOL
+          - cbBTC
+          - EURC
+          - BNB
+          default: USD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nav:
+                    type: number
+                    description: The Net Asset Value in the requested currency
+                  currency:
+                    type: string
+                    description: The currency code of the returned value (e.g., USD, EUR, ETH)
+                  conversionPrice:
+                    type: number
+                    description: The conversion price used. For fiat, the exchange rate from USD. For crypto, the weighted average price in USD across queried wallets.
+              example:
+                nav: 1235564.43
+                currency: USD
+                conversionPrice: 1
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

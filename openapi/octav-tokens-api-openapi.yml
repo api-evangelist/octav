@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Tokens API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Tokens
+  description: Token data endpoints
+paths:
+  /token-overview:
+    get:
+      summary: Token Overview
+      description: 'Get detailed token breakdown by protocol (PRO only).
+
+
+        **Cost:** 1 credit per call
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getTokenOverview
+      tags:
+      - Tokens
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: EVM or SOL blockchain address
+        schema:
+          type: string
+        example: '0x6426af179aabebe47666f345d69fd9079673f6cd'
+      - name: date
+        in: query
+        required: true
+        description: Portfolio snapshot date in YYYY-MM-DD format
+        schema:
+          type: string
+          format: date
+        example: '2024-11-01'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    image:
+                      type: string
+                      description: Token logo URL
+                    symbol:
+                      type: string
+                      description: Token ticker symbol (e.g. ETH, USDC)
+                    name:
+                      type: string
+                      description: Full token name
+                    price:
+                      type: string
+                      description: Token price at the specified date
+                    balance:
+                      type: string
+                      description: Total quantity held across all positions
+                    value:
+                      type: string
+                      description: Total value in USD
+                    percentage:
+                      type: string
+                      description: Percentage of total portfolio value
+                    protocolsDetailed:
+                      type: array
+                      description: Breakdown of token distribution across protocols
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            description: Protocol identifier
+                          name:
+                            type: string
+                            description: Protocol display name
+                          value:
+                            type: string
+                            description: Value held in this protocol
+                          balance:
+                            type: string
+                            description: Quantity held in this protocol
+                          image:
+                            type: string
+                            description: Protocol logo URL
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

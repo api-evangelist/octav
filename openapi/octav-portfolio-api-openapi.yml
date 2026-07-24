@@ -1,0 +1,248 @@
+openapi: 3.0.0
+info:
+  title: Octav Airdrops Portfolio API
+  description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
+  version: 1.0.0
+  contact:
+    name: Octav Support
+    url: https://octav.fi
+    email: info@octav.fi
+servers:
+- url: https://api.octav.fi/v1
+  description: Production API
+security:
+- bearerAuth: []
+tags:
+- name: Portfolio
+  description: Portfolio and holdings endpoints
+paths:
+  /portfolio:
+    get:
+      summary: Portfolio
+      description: 'Retrieve portfolio holdings across wallets and DeFi protocols.
+
+
+        **Cost:** 1 credit per call
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getPortfolio
+      tags:
+      - Portfolio
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: EVM or SOL wallet address to retrieve portfolio data for
+        schema:
+          type: string
+        example: '0x6426af179aabebe47666f345d69fd9079673f6cd'
+      - name: includeImages
+        in: query
+        required: false
+        description: Include image URLs for chains, assets, and protocols
+        schema:
+          type: boolean
+          default: false
+      - name: includeExplorerUrls
+        in: query
+        required: false
+        description: Include blockchain explorer URLs for assets and transactions
+        schema:
+          type: boolean
+          default: false
+      - name: waitForSync
+        in: query
+        required: false
+        description: Wait for fresh data if cache is stale
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: The wallet address
+                  networth:
+                    type: string
+                    description: Total portfolio net worth in USD
+                  cashBalance:
+                    type: string
+                    description: Available cash balance
+                  dailyIncome:
+                    type: string
+                    description: Income generated today
+                  dailyExpense:
+                    type: string
+                    description: Expenses incurred today
+                  fees:
+                    type: string
+                    description: Total fees in native asset
+                  feesFiat:
+                    type: string
+                    description: Total fees in USD
+                  lastUpdated:
+                    type: string
+                    description: Last sync timestamp (milliseconds since epoch)
+                  assetByProtocols:
+                    type: object
+                    description: Assets organized by protocol
+                  chains:
+                    type: object
+                    description: Assets organized by blockchain
+      security:
+      - bearerAuth: []
+  /portfolio/at-block:
+    get:
+      summary: Portfolio At Block
+      description: 'Retrieve a single Ethereum address''s portfolio valued at a specific historical block. Requires the Portfolio at Block add-on to be enabled for your API key.
+
+
+        **Cost:** Set monthly fee under the Portfolio at Block add-on, plus 1 credit per call
+
+
+        **Rate limit:** 100 requests/min on a dedicated bucket
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getPortfolioAtBlock
+      tags:
+      - Portfolio
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: A single EVM wallet address to retrieve portfolio data for. Only one address is accepted per call.
+        schema:
+          type: string
+        example: '0x6426af179aabebe47666f345d69fd9079673f6cd'
+      - name: chainKey
+        in: query
+        required: true
+        description: Chain the block belongs to. Only ethereum is currently supported.
+        schema:
+          type: string
+          enum:
+          - ethereum
+        example: ethereum
+      - name: blockNumber
+        in: query
+        required: true
+        description: The block number to value the portfolio at. Must be a positive integer.
+        schema:
+          type: integer
+          minimum: 1
+        example: 19000000
+      responses:
+        '200':
+          description: Successful response — same shape as GET /portfolio (an array with one portfolio for the requested address), each portfolio carrying a top-level blockNumber field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: The wallet address
+                  blockNumber:
+                    type: string
+                    description: The block number the portfolio was valued at (echoes the blockNumber query parameter, returned as a string)
+                  networth:
+                    type: string
+                    description: Total portfolio net worth in USD, valued at blockNumber
+                  cashBalance:
+                    type: string
+                    description: Available cash balance at blockNumber
+                  assetByProtocols:
+                    type: object
+                    description: Assets organized by protocol, valued at blockNumber
+                  chains:
+                    type: object
+                    description: Assets organized by blockchain (only ethereum is present)
+        '400':
+          description: Validation error — missing/invalid addresses, chainKey, or blockNumber
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Validation Failed
+                  details:
+                    type: object
+                    description: Joi validation error details, keyed by request segment (e.g. query)
+        '401':
+          description: Missing/invalid API key, or the Portfolio at Block add-on is not enabled for this key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        '402':
+          description: Insufficient credits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+        '429':
+          description: Rate limit exceeded — 100 requests/min on this endpoint's dedicated bucket
+        '500':
+          description: Upstream failure fetching Portfolio at Block data
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error fetching block-pinned portfolio information
+      security:
+      - bearerAuth: []
+  /historical:
+    get:
+      summary: Historical Portfolio
+      description: 'Retrieve portfolio snapshots from specific dates.
+
+
+        **Cost:** 1 credit per call
+
+
+        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+      operationId: getHistoricalPortfolio
+      tags:
+      - Portfolio
+      parameters:
+      - name: addresses
+        in: query
+        required: true
+        description: EVM or SOL wallet address
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: true
+        description: Date in YYYY-MM-DD format (e.g., 2024-11-01)
+        schema:
+          type: string
+          format: date
+        example: '2024-11-01'
+      responses:
+        '200':
+          description: Successful response
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
