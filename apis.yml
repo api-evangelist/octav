@@ -1,8 +1,29 @@
 aid: octav
 name: Octav
-description: Octav is a company surfaced as a portfolio company of speedinvest and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Octav is a cryptocurrency portfolio intelligence platform that provides real-time,
+  multi-chain portfolio data, transaction history, DeFi protocol positions, and
+  historical snapshots across 65+ blockchain networks and 2M+ tokens. Its credit-based,
+  read-only REST API lets developers and AI agents build portfolio dashboards, tax
+  tools, NAV reporting, alerting, and analytics applications, with decoded DeFi
+  positions (lending, LPs, staking, vaults, perps), Solana and EVM address support,
+  Ethereum Beacon validator data, and drop-in migration guides from DeBank, Zerion,
+  Zapper, Nansen, Covalent, and others. Octav is SOC 2 Type 1 & 2 certified and
+  ships official MCP server, Rust CLI, and Agent Skill tooling. Backed by Speedinvest.
 url: https://raw.githubusercontent.com/api-evangelist/octav/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://framerusercontent.com/images/mzciJN6fJmiKcfU39pZcq3Zn3z4.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -11,12 +32,339 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
-apis: []
+- Cryptocurrency
+- Blockchain
+- Portfolio
+- DeFi
+- Analytics
+- Web3
+- Financial Data
+- Wallet
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 18
+  pass: local-v1
+apis:
+- aid: octav:octav-airdrops-api
+  name: Octav Airdrops API
+  description: Airdrop eligibility endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Airdrops
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-airdrops-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-approvals-api
+  name: Octav Approvals API
+  description: Token approval endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Approvals
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-approvals-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-beacon-validators-api
+  name: Octav Beacon Validators API
+  description: >-
+    Ethereum beacon chain validator endpoints — details, rewards, withdrawals, and deposits (mainnet only)
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Beacon Validators
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-beacon-validators-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-chains-api
+  name: Octav Chains API
+  description: Blockchain network and protocol endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Chains
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-chains-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-contract-protocol-api
+  name: Octav Contract Protocol API
+  description: Resolve a contract address to its DeFi protocol
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Contract Protocol
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-contract-protocol-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-credits-api
+  name: Octav Credits API
+  description: Credit balance endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Credits
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-credits-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-nav-api
+  name: Octav Nav API
+  description: Net Asset Value endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Nav
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-nav-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-portfolio-api
+  name: Octav Portfolio API
+  description: Portfolio and holdings endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Portfolio
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-portfolio-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-status-api
+  name: Octav Status API
+  description: Status check endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-status-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-sync-api
+  name: Octav Sync API
+  description: Data synchronization endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Sync
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-sync-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-tokens-api
+  name: Octav Tokens API
+  description: Token data endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-transactions-api
+  name: Octav Transactions API
+  description: Transaction history endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-virtual-users-api
+  name: Octav Virtual Users API
+  description: Virtual user management and portfolio endpoints (Pro only)
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Virtual Users
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-virtual-users-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+- aid: octav:octav-wallet-api
+  name: Octav Wallet API
+  description: Wallet information endpoints
+  humanURL: https://docs.octav.fi/api/introduction
+  baseURL: https://api.octav.fi/v1
+  tags:
+  - Wallet
+  properties:
+  - type: OpenAPI
+    url: openapi/octav-wallet-api-openapi.yml
+  - type: Documentation
+    url: https://docs.octav.fi
+  - type: APIReference
+    url: https://docs.octav.fi/api/introduction
+  - type: GettingStarted
+    url: https://docs.octav.fi/api/quickstart
+  - type: Authentication
+    url: https://docs.octav.fi/api/authentication
+common:
+- type: DomainSecurity
+  url: security/octav-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/octav-agentic-access.yml
+- type: Authentication
+  url: authentication/octav-authentication.yml
+- type: OpenAPI
+  url: openapi/octav-openapi-original.json
+- type: Overlay
+  url: overlays/octav-openapi-overlay.yaml
+- type: MCPServer
+  url: mcp/octav-mcp.yml
+- type: Packages
+  url: packages/octav-packages.yml
+- type: CLI
+  url: cli/octav-cli.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/octav-llms.txt
+- type: Conventions
+  url: conventions/octav-conventions.yml
+- type: ErrorCatalog
+  url: errors/octav-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/octav-lifecycle.yml
+- type: Conformance
+  url: conformance/octav-conformance.yml
+- type: Compliance
+  url: conformance/octav-conformance.yml
+- type: DataModel
+  url: data-model/octav-data-model.yml
+- type: WellKnown
+  url: well-known/octav-well-known.yml
+- type: ChangeLog
+  url: changelog/octav-changelog.yml
+- type: ChangeLog
+  url: https://docs.octav.fi/docs/changelog
+- type: DeveloperPortal
+  url: https://data.octav.fi
+- type: Documentation
+  url: https://docs.octav.fi
+- type: APIReference
+  url: https://docs.octav.fi/api/introduction
+- type: GettingStarted
+  url: https://docs.octav.fi/api/quickstart
+- type: Pricing
+  url: https://docs.octav.fi/api/pricing
+- type: SignUp
+  url: https://data.octav.fi
+- type: TermsOfService
+  url: https://octav.fi/terms-of-services
+- type: PrivacyPolicy
+  url: https://octav.fi/privacy-policy
+- type: GitHubOrganization
+  url: https://github.com/Octav-Labs
+- type: Support
+  url: https://docs.octav.fi/docs/contact-us
+- type: Website
+  url: https://octav.fi

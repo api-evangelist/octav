@@ -1,0 +1,14 @@
+generated: '2026-07-20'
+method: searched
+source: https://github.com/Octav-Labs/octav-api-skill
+note: Official Octav Labs Agent Skill, saved verbatim from the Octav-Labs/octav-api-skill repository.
+skills:
+- file: octav-api-skill.md
+  name: octav-api
+  official: true
+  install: npx skills add octav-labs/octav-api-skill
+  api: openapi/octav-openapi-original.json
+  description: >-
+    Integrate with the Octav API for cryptocurrency portfolio tracking, transaction
+    history, and DeFi analytics across 65+ blockchain networks.
+  operations: [getPortfolio, getNav, getWallet, getTransactions, getTokenOverview, getHistoricalPortfolio, syncWallet, getStatus, getCredits]

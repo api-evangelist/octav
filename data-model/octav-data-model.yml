@@ -1,0 +1,55 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/octav-openapi-original.json; https://docs.octav.fi/api/endpoints/portfolio
+note: >-
+  Octav's OpenAPI defines explicit component schemas only for the Beacon validator
+  family; portfolio/transaction shapes are documented inline and in the object
+  reference. Entities and relationships below are derived from the endpoint
+  surface and documented response structures.
+entities:
+- name: Portfolio
+  key: address
+  fields: [address, networth, assetByProtocols, chains]
+  source: GET /v1/portfolio
+- name: Chain
+  key: chainKey
+  fields: [chainKey, name, value]
+  source: GET /v1/chains
+- name: Protocol
+  key: key
+  fields: [key, name, value, type]
+  note: 33 protocol position types (WALLET, LENDING, LIQUIDITYPOOL, STAKED, VAULT, FARMING, PERPETUALS, MARGIN, ...)
+  source: GET /v1/chains/{chainKey}/protocols
+- name: Asset
+  fields: [token, symbol, balance, value, priceSource]
+- name: Transaction
+  fields: [hash, chain, type, timestamp, protocol, value]
+  note: 53 transaction types (SWAP, TRANSFERIN, TRANSFEROUT, DEPOSIT, WITHDRAW, STAKE, ...)
+  source: GET /v1/transactions
+- name: Approval
+  key: [chain, contract]
+  source: GET /v1/approvals/{chain}
+- name: VirtualUser
+  source: GET /v1/virtual-users
+- name: Validator
+  key: [index, pubkey]
+  fields: [index, pubkey, details, rewards, withdrawals, deposits]
+  source: GET /v1/beacon/validators/*
+- name: Credits
+  fields: [balance]
+  source: GET /v1/credits
+relationships:
+- {from: Portfolio, to: Chain, kind: has_many, via: chains}
+- {from: Portfolio, to: Protocol, kind: has_many, via: assetByProtocols}
+- {from: Chain, to: Protocol, kind: has_many, via: protocols}
+- {from: Protocol, to: Asset, kind: has_many, via: assets}
+- {from: Transaction, to: Chain, kind: belongs_to, via: chain}
+- {from: Transaction, to: Protocol, kind: belongs_to, via: protocol}
+- {from: Approval, to: Chain, kind: belongs_to, via: chain}
+- {from: VirtualUser, to: Portfolio, kind: has_many, via: addresses}
+- {from: Validator, to: ValidatorReward, kind: has_many, via: rewards}
+- {from: Validator, to: ValidatorWithdrawal, kind: has_many, via: withdrawals}
+- {from: Validator, to: ValidatorDeposit, kind: has_many, via: deposits}
+id_formats:
+- {entity: address, format: 'EVM 0x… (hex) or Solana base58'}
+- {entity: Validator, format: 'Beacon chain validator index (int) or BLS pubkey (0x…)'}

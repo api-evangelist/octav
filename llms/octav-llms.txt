@@ -1,0 +1,177 @@
+# Octav API
+
+> Octav is a cryptocurrency portfolio tracking and analytics REST API that provides real-time multi-chain portfolio data, transaction history, DeFi protocol positions, and historical snapshots across 65+ blockchain networks. It enables developers and AI agents to build crypto portfolio dashboards, tax tools, alert systems, and analytics applications.
+
+Octav API is a credit-based, read-only REST API. All requests require a Bearer token and consume credits (most endpoints cost 1 credit per call). The API returns JSON responses and supports EVM (0x...) and Solana (base58) wallet addresses.
+
+**Authentication**: Bearer token in the `Authorization` header. Get your API key at https://data.octav.fi — keys must be kept secret and never committed to version control.
+
+**Base URL**: `https://api.octav.fi`
+
+**Rate Limit**: 360 requests per minute per API key. Rate limit headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) are returned on every response.
+
+**Pricing**: Credit-based ($0.020–$0.025 per credit depending on package). Credits never expire. Most endpoints cost 1 credit. Free endpoints: `/v1/credits` and `/v1/status`. Purchase credits at https://data.octav.fi
+
+**Prerequisites**: An Octav account, an API key, and purchased credits. Sign up at https://data.octav.fi
+
+**Address Format**: Comma-separate multiple addresses in a single request to save credits (e.g. `?addresses=0x123,0x456`).
+
+**Caching**: Portfolio data is cached for 1 minute. Transaction data is cached for 10 minutes.
+
+### Quick Code Example
+
+```bash
+# Check your credits (free)
+curl https://api.octav.fi/v1/credits \
+  -H "Authorization: Bearer YOUR_API_KEY"
+
+# Get portfolio holdings (1 credit)
+curl "https://api.octav.fi/v1/portfolio?addresses=0xYOUR_ADDRESS" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+
+# Get transaction history (1 credit)
+curl "https://api.octav.fi/v1/transactions?addresses=0xYOUR_ADDRESS&limit=50&offset=0&sort=DESC" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript
+// JavaScript example
+const API_KEY = process.env.OCTAV_API_KEY;
+const headers = { 'Authorization': `Bearer ${API_KEY}` };
+
+// Get portfolio
+const portfolio = await fetch(
+  'https://api.octav.fi/v1/portfolio?addresses=0xYOUR_ADDRESS',
+  { headers }
+).then(r => r.json());
+
+console.log('Net Worth:', portfolio[0].networth);
+console.log('Chains:', Object.keys(portfolio[0].chains));
+console.log('Protocols:', Object.keys(portfolio[0].assetByProtocols));
+```
+
+```python
+# Python example
+import requests
+
+headers = {'Authorization': 'Bearer YOUR_API_KEY'}
+
+portfolio = requests.get(
+    'https://api.octav.fi/v1/portfolio',
+    params={'addresses': '0xYOUR_ADDRESS'},
+    headers=headers
+).json()
+
+print(f"Net Worth: {portfolio[0]['networth']}")
+```
+
+### Error Handling
+
+Common HTTP error codes returned by the API:
+
+- **401 Unauthorized**: Invalid or missing API key. Verify your `Authorization: Bearer <key>` header.
+- **402 Payment Required**: Insufficient credits. Purchase more at https://data.octav.fi
+- **403 Forbidden**: Endpoint requires an Octav PRO subscription (e.g. Token Overview).
+- **429 Too Many Requests**: Rate limit exceeded. Read the `Retry-After` header and wait before retrying. Implement exponential backoff.
+- **404 Not Found**: Address not indexed. Addresses with >100k transactions are not auto-indexed — contact support.
+
+Implement retry logic for rate limits:
+
+```javascript
+async function fetchWithRetry(url, options, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    const response = await fetch(url, options);
+    if (response.status === 429) {
+      const retryAfter = response.headers.get('Retry-After') || 60;
+      await new Promise(r => setTimeout(r, retryAfter * 1000));
+      continue;
+    }
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`API Error ${response.status}: ${error.message}`);
+    }
+    return response;
+  }
+  throw new Error('Max retries exceeded');
+}
+```
+
+## Getting Started
+
+- [Introduction](https://docs.octav.fi/api/introduction): API overview, base URL, core capabilities, and endpoint summary
+- [Authentication](https://docs.octav.fi/api/authentication): API key creation, Bearer token usage, security best practices, and error responses
+- [Quickstart](https://docs.octav.fi/api/quickstart): First API calls with examples in cURL, JavaScript, Python, and TypeScript
+- [Pricing](https://docs.octav.fi/api/pricing): Credit packages ($100–$20,000), per-endpoint costs, and cost optimization tips
+
+## API Reference
+
+- [Portfolio](https://docs.octav.fi/api/endpoints/portfolio): GET /v1/portfolio — Multi-chain holdings across wallets and DeFi protocols (1 credit)
+- [Portfolio At Block](https://docs.octav.fi/api/endpoints/portfolio-at-block): GET /v1/portfolio/at-block — Single-address portfolio valued at a specific historical block, Ethereum only, requires the Portfolio at Block add-on enabled per API key (set monthly fee + 1 credit per call, 100 req/min dedicated rate limit)
+- [Virtual Users](https://docs.octav.fi/api/endpoints/virtual-users): GET /v1/virtual-users — List virtual users belonging to your account, requires Pro (1 credit)
+- [Virtual Users Portfolio](https://docs.octav.fi/api/endpoints/virtual-users): GET /v1/virtual-users/portfolio — Portfolio holdings for virtual users, same schema as /portfolio, requires Pro (1 credit per address)
+- [Nav](https://docs.octav.fi/api/endpoints/nav): GET /v1/nav — Net Asset Value as a single number (1 credit)
+- [Wallet](https://docs.octav.fi/api/endpoints/wallet): GET /v1/wallet — Wallet token balances and values (1 credit)
+- [Transactions](https://docs.octav.fi/api/endpoints/transactions): GET /v1/transactions — Transaction history with filtering by chain, type, protocol, date range (1 credit)
+- [Token Approvals](https://docs.octav.fi/api/endpoints/approvals): GET /v1/approvals/{chain} — Token approval records for a specific chain (1 credit)
+- [Token Overview](https://docs.octav.fi/api/endpoints/token-overview): GET /v1/token-overview — Token breakdown by protocol, requires PRO (1 credit)
+- [Airdrop](https://docs.octav.fi/api/endpoints/airdrop): GET /v1/airdrop — Airdrop eligibility check for Solana addresses only (1 credit)
+- [Subscribe Snapshot](https://docs.octav.fi/api/endpoints/subscribe-snapshot): POST — Subscribe addresses to automatic daily portfolio snapshots (1200 credits)
+- [Historical Portfolio](https://docs.octav.fi/api/endpoints/historical-portfolio): GET /v1/historical — Portfolio snapshot for a specific past date (1 credit)
+- [Sync Transactions](https://docs.octav.fi/api/endpoints/sync): POST /v1/sync-transactions — Trigger transaction indexing, 1 credit + 1 per 250 txns on first sync
+- [Beacon Validators](https://docs.octav.fi/api/endpoints/beacon-validators): GET /v1/beacon/validators/* — Ethereum validator details, rewards, withdrawals, and deposits by index or BLS pubkey (add-on, set monthly fee, no per-call credit)
+- [Chains](https://docs.octav.fi/api/endpoints/chains): GET /v1/chains — List all supported blockchain networks (free)
+- [Protocols](https://docs.octav.fi/api/endpoints/protocols): GET /v1/chains/{chainKey}/protocols — List protocols on a specific chain (free)
+- [Contract Protocol](https://docs.octav.fi/api/endpoints/contract-protocol): GET /v1/contract-protocol — Resolve a contract address to its DeFi protocol; pass chain for a single match or omit it to search all chains (5 credits, refunded on 404)
+- [Status](https://docs.octav.fi/api/endpoints/status): GET /v1/status — Check address sync status and data freshness (free)
+- [Credits](https://docs.octav.fi/api/endpoints/credits): GET /v1/credits — Check remaining credit balance (free)
+
+## Migration Guides
+
+- [Migrate to Octav (overview)](https://docs.octav.fi/api/migrate/overview): Move from any portfolio, wallet-data, or DeFi API to Octav with endpoint, auth, and field mappings
+- [Migrate from DeBank](https://docs.octav.fi/api/migrate/from-debank): Collapse all_token_list + all_complex_protocol_list + total_balance into one call, add Solana
+- [Migrate from Zerion](https://docs.octav.fi/api/migrate/from-zerion): Replace JSON:API positions with a flat, USD-priced portfolio; receipt tokens decoded once
+- [Migrate from Zapper](https://docs.octav.fi/api/migrate/from-zapper): Replace the portfolioV2 GraphQL query with a single REST call
+- [Migrate from Mobula](https://docs.octav.fi/api/migrate/from-mobula): Merge wallet/portfolio + wallet/defi-positions into one response
+- [Migrate from Nansen](https://docs.octav.fi/api/migrate/from-nansen): Replace two profiler/portfolio POST endpoints with one GET, no receipt-token double-count
+- [Migrate from Sim (Dune)](https://docs.octav.fi/api/migrate/from-sim): Keep token balances, add the decoded DeFi positions Sim sunset, plus Solana
+- [Migrate from GoldRush (Covalent)](https://docs.octav.fi/api/migrate/from-goldrush): Replace balances_v2 and add the DeFi decoding GoldRush deprecated
+- [Migrate from TopLedger](https://docs.octav.fi/api/migrate/from-topledger): Keep Solana DeFi decoding, add loose token holdings, EVM, and marked-to-market perps
+
+## Guides
+
+- [AI Development Overview](https://docs.octav.fi/api/ai-development/overview): Build crypto portfolio apps and analytics tools with AI assistance
+- [Quick Start with AI](https://docs.octav.fi/api/ai-development/quick-start): Ready-to-use prompts for building portfolio trackers, DeFi dashboards, and tax tools
+- [AI Agents & LLMs Integration](https://docs.octav.fi/api/ai-development/llms-integration): Integrate Octav into ChatGPT, Claude, Cursor, and autonomous agents
+- [MCP Server](https://docs.octav.fi/api/ai-development/mcp-server): Connect Claude Desktop, Cursor, and VS Code to the Octav API via the Model Context Protocol
+- [Building AI Agents](https://docs.octav.fi/api/ai-development/building-agents): Production-ready portfolio monitoring agents with Python and JavaScript examples
+
+## Examples
+
+- [Quickstart Code Examples](https://docs.octav.fi/api/quickstart): Portfolio fetch, transaction query, error handling, and rate limit patterns in 4 languages
+- [Building AI Agents](https://docs.octav.fi/api/ai-development/building-agents): Complete portfolio monitor agent, transaction watcher, and notification integrations (Slack, Discord, Telegram)
+- [OpenAPI Specification](https://docs.octav.fi/openapi.json): Full OpenAPI 3.0 spec for code generation and API client scaffolding
+
+## Reference
+
+- [Supported Chains](https://docs.octav.fi/api/reference/supported-chains): 65+ blockchain networks — full support (portfolio + transactions) for ethereum, arbitrum, base, polygon, optimism, avalanche, binance, solana, blast, linea, gnosis, sonic, starknet, fraxtal, unichain
+- [Protocol Types](https://docs.octav.fi/api/reference/protocol-types): 33 protocol position types including WALLET, LENDING, LIQUIDITYPOOL, STAKED, VAULT, FARMING, PERPETUALS, MARGIN, and more
+- [Transaction Types](https://docs.octav.fi/api/reference/transaction-types): 53 transaction types including SWAP, TRANSFERIN, TRANSFEROUT, DEPOSIT, WITHDRAW, STAKE, UNSTAKE, CLAIM, ADDLIQUIDITY, REMOVELIQUIDITY, BORROW, LEND, BRIDGEIN, BRIDGEOUT, MINT, APPROVAL
+
+## Tutorials
+
+- [Platform Quickstart](https://docs.octav.fi/docs/quickstart): Getting started with the Octav Pro portfolio tracking platform
+- [Address Book](https://docs.octav.fi/docs/address-book): Managing and organizing wallet addresses
+- [Transactions Guide](https://docs.octav.fi/docs/transactions): Viewing, filtering, and analyzing transaction history
+- [Reports](https://docs.octav.fi/docs/reports): Generating portfolio reports and data exports
+- [Supported Widgets](https://docs.octav.fi/docs/supported-widgets): Available dashboard widgets for portfolio visualization
+- [Build Custom Widgets](https://docs.octav.fi/docs/build-custom-widgets): Creating custom dashboard widgets
+
+## Optional
+
+- [Changelog](https://docs.octav.fi/docs/changelog): Latest platform updates, new chain support, and bug fixes
+- [Supported Blockchains (Platform)](https://docs.octav.fi/docs/supported-blockchains): Full list of 90+ blockchains supported in the Octav Pro platform
+- [Brand Guidelines](https://docs.octav.fi/docs/brand-guidelines): Octav brand colors, typography, and usage guidelines
+- [Logo Files](https://docs.octav.fi/docs/logo-files): Octav logo assets for light and dark themes
+- [Contact Us](https://docs.octav.fi/docs/contact-us): Support channels, Discord community, and enterprise inquiries
+- [Submit a Feature](https://docs.octav.fi/docs/submit-feature): Feature request submission via Canny
+- [Agent Skill](https://skills.sh/Octav-Labs/octav-api-skill): Install the Octav API skill for Claude Code, Codex, and ChatGPT agents

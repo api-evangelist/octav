@@ -1,0 +1,40 @@
+{
+  "provider": "octav",
+  "sources": [
+    "octav-airdrops-api-openapi.yml",
+    "octav-approvals-api-openapi.yml",
+    "octav-beacon-validators-api-openapi.yml",
+    "octav-chains-api-openapi.yml",
+    "octav-contract-protocol-api-openapi.yml",
+    "octav-credits-api-openapi.yml",
+    "octav-nav-api-openapi.yml",
+    "octav-portfolio-api-openapi.yml",
+    "octav-status-api-openapi.yml",
+    "octav-sync-api-openapi.yml",
+    "octav-tokens-api-openapi.yml",
+    "octav-transactions-api-openapi.yml",
+    "octav-virtual-users-api-openapi.yml",
+    "octav-wallet-api-openapi.yml"
+  ],
+  "outputs": [
+    "octav-airdrops-api-openapi.yml",
+    "octav-approvals-api-openapi.yml",
+    "octav-beacon-validators-api-openapi.yml",
+    "octav-chains-api-openapi.yml",
+    "octav-contract-protocol-api-openapi.yml",
+    "octav-credits-api-openapi.yml",
+    "octav-nav-api-openapi.yml",
+    "octav-portfolio-api-openapi.yml",
+    "octav-status-api-openapi.yml",
+    "octav-sync-api-openapi.yml",
+    "octav-tokens-api-openapi.yml",
+    "octav-transactions-api-openapi.yml",
+    "octav-virtual-users-api-openapi.yml",
+    "octav-wallet-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

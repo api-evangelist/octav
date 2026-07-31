@@ -1,0 +1,37 @@
+generated: '2026-07-20'
+method: searched
+source: npm registry, crates.io, Octav-Labs GitHub org
+packages:
+- language: typescript
+  registry: npm
+  name: octav-api-mcp
+  url: https://www.npmjs.com/package/octav-api-mcp
+  install: npx octav-api-mcp
+  version: 1.1.0
+  repository: https://github.com/Octav-Labs/octav-api-mcp
+  official: true
+  kind: mcp-server
+  description: Official MCP server exposing the Octav API to AI agents (14 tools)
+- language: rust
+  registry: crates.io
+  name: octav
+  url: https://crates.io/crates/octav
+  install: cargo install octav
+  repository: https://github.com/Octav-Labs/octav-cli
+  official: true
+  kind: cli
+  description: Official Octav CLI — query portfolio, transactions, NAV, and historical snapshots from the terminal
+- language: typescript
+  registry: github
+  name: octav-frontend-template-public
+  url: https://github.com/Octav-Labs/octav-frontend-template-public
+  repository: https://github.com/Octav-Labs/octav-frontend-template-public
+  official: true
+  kind: starter-template
+  description: Public frontend template to start building on the Octav API
+notes: >-
+  Octav publishes official tooling (MCP server on npm, a Rust CLI on crates.io, and
+  a frontend starter template) but no first-party language client library / SDK.
+  The CLI command surface is catalogued in cli/octav-cli.yml and the MCP server in
+  mcp/octav-mcp.yml. No SDKs pointer is emitted because there is no first-party
+  language SDK.

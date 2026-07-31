@@ -1,0 +1,61 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.octav.fi/api/introduction
+authentication:
+  style: http-bearer
+  header: Authorization
+  detail: See authentication/octav-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    Read-only API; the two POST operations (sync-transactions, subscribe-snapshot)
+    do not document an idempotency-key header. No Idempotency-Key contract is published.
+pagination:
+  style: offset-and-cursor
+  params:
+  - {name: limit, note: results per page (transactions max 250, default 50)}
+  - {name: offset, note: pagination offset}
+  - {name: cursor, note: opaque cursor on cursor-paginated endpoints}
+  - {name: sort, note: 'ASC | DESC'}
+  - {name: page, note: page number on paginated Beacon validator endpoints}
+batching:
+  supported: true
+  note: Comma-separate multiple addresses in a single request to save credits (e.g. ?addresses=0x123,0x456)
+rate_limiting:
+  limit: 360 requests per minute per API key
+  headers:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - Retry-After
+  retry_guidance: On 429, read Retry-After and apply exponential backoff
+  dedicated_buckets:
+  - {endpoint: /v1/portfolio/at-block, limit: 100 requests per minute}
+caching:
+  portfolio_data: 1 minute
+  transaction_data: 10 minutes
+  note: Use waitForSync=true to force fresh data when cached data is stale
+metering:
+  model: credit-based
+  free_endpoints:
+  - /v1/credits
+  - /v1/status
+  - /v1/chains
+  - /v1/chains/{chainKey}/protocols
+  detail: See finops/pricing and mcp/cli; most endpoints cost 1 credit/address
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://api.octav.fi/v1
+error_envelope:
+  content_types:
+  - application/json
+  - text/plain
+  detail: See errors/octav-problem-types.yml
+address_formats:
+- {kind: evm, format: '0x... (hex)'}
+- {kind: solana, format: base58}
+cross_links:
+  errors: errors/octav-problem-types.yml
+  lifecycle: lifecycle/octav-lifecycle.yml
+  authentication: authentication/octav-authentication.yml

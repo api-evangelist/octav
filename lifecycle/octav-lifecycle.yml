@@ -1,0 +1,24 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.octav.fi/docs/changelog
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://api.octav.fi/v1
+changelog: https://docs.octav.fi/docs/changelog
+deprecation:
+  policy_url: null
+  sunset_header: null
+  note: No formal deprecation policy or RFC 8594 Sunset/Deprecation header support was found in the docs
+sla:
+  url: null
+  note: No published SLA/uptime target found; enterprise tier is custom
+status_page:
+  url: null
+  note: >-
+    No public status page found. Probed status.octav.fi (unreachable),
+    octav.statuspage.io and octav.instatus.com (both resolve to generic
+    platform landing pages, not a registered Octav status page). The API
+    exposes GET /v1/status for per-address sync freshness, which is not a
+    provider-wide status page.
+deprecated_operations: []

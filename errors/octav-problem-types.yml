@@ -1,0 +1,45 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/octav-openapi-original.json
+docs: https://docs.octav.fi/api/authentication
+format: http-status
+envelope:
+  content_types:
+  - application/json
+  - text/plain
+  note: >-
+    Errors are returned as JSON (or text/plain on some upstream failures), not
+    RFC 9457 problem+json. Body typically carries a message field.
+problems:
+- status: 400
+  title: Validation error
+  description: Missing/invalid addresses, chainKey, or blockNumber
+  remediation: Verify required query parameters and address formats (EVM 0x… or Solana base58)
+- status: 401
+  title: Unauthorized
+  description: Missing/invalid API key, or a required add-on (e.g. Portfolio at Block) is not enabled for this key
+  remediation: 'Verify the Authorization: Bearer <key> header; confirm add-on entitlements'
+- status: 402
+  title: Insufficient credits
+  description: The account has no remaining credits to cover the call
+  remediation: Purchase more credits at https://data.octav.fi
+- status: 403
+  title: Forbidden
+  description: Endpoint requires an Octav PRO subscription, or one or more virtual-user addresses do not belong to this account
+  remediation: Confirm the subscription tier supports the endpoint and that addresses are owned by the account
+- status: 404
+  title: Not found
+  description: Address not indexed (>100k txns are not auto-indexed) or chain not found
+  remediation: Contact support to index large addresses; verify chainKey
+- status: 429
+  title: Rate limit exceeded
+  description: Exceeded 360 req/min (or 100 req/min on the dedicated Portfolio-at-Block bucket)
+  remediation: Read the Retry-After header and apply exponential backoff
+- status: 500
+  title: Internal server error
+  description: Upstream failure fetching data (e.g. Portfolio at Block)
+  remediation: Retry with backoff; contact support if persistent
+- status: 502
+  title: Bad gateway
+  description: Upstream provider unavailable
+  remediation: Retry with backoff

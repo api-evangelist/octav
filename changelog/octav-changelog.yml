@@ -1,0 +1,50 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.octav.fi/docs/changelog
+scheme: dated
+current_version: v1
+entries:
+- date: '2025-10-28'
+  type: fix
+  highlights:
+  - Resolved 402 payment error on /v1/agent/wallet and /v1/agent/portfolio endpoints
+- date: '2025-10-23'
+  type: addition
+  highlights:
+  - Reports page launch with portfolio analysis and data export
+  - Advanced pricing system with multiple sources (DeBank, CoinGecko, DefiLlama) and priority settings
+  - TAC (The Abyss Chain) portfolio tracking added
+- date: '2025-09-24'
+  type: addition
+  highlights:
+  - Lighter Chain support with full portfolio tracking
+  - Lighter Protocol integration (public vaults, spot, margin positions)
+- date: '2025-09-10'
+  type: addition
+  highlights:
+  - New portfolio-only license option without transaction tracking
+  - Plasma Testnet transaction support
+- date: '2025-09-03'
+  type: mixed
+  highlights:
+  - Unichain transaction support added
+  - UI fix for snapshot title display with lengthy names
+- date: '2025-08-27'
+  type: addition
+  highlights:
+  - Five new chains — Corn, Ink, Katana, Morph, Swellchain
+  - Multi-chain Lagoon balance support (Arbitrum, Avalanche, Base, Ethereum)
+- date: '2025-08-21'
+  type: addition
+  highlights:
+  - Starknet protocol support (Ekubo, Vesu)
+  - API enhancement adding priceSource field
+  - Plume (RWA-focused) chain support
+- date: '2025-08-13'
+  type: change
+  highlights:
+  - API rate limit doubled from 180 to 360 requests/minute
+- date: '2025-08-06'
+  type: addition
+  highlights:
+  - New Solana airdrop tracking API endpoint

@@ -1,0 +1,47 @@
+generated: '2026-07-20'
+method: searched
+status: published
+source: https://docs.octav.fi/api/ai-development/mcp-server
+official: true
+server:
+  name: octav-api-mcp
+  transport: stdio
+  package: octav-api-mcp
+  registry: npm
+  npm: https://www.npmjs.com/package/octav-api-mcp
+  version: 1.1.0
+  repository: https://github.com/Octav-Labs/octav-api-mcp
+  install: npx octav-api-mcp
+  clients:
+  - Claude Desktop
+  - Claude Code
+  - Cursor
+  - VS Code
+  auth:
+    env: OCTAV_API_KEY
+    note: Bearer API key from https://data.octav.fi passed via environment variable
+config_example:
+  mcpServers:
+    octav:
+      command: npx
+      args:
+      - octav-api-mcp
+      env:
+        OCTAV_API_KEY: your-api-key
+tool_count: 14
+tool_groups:
+- name: Portfolio & Holdings
+  count: 4
+- name: Transactions
+  count: 2
+- name: Historical & Snapshots
+  count: 2
+- name: Metadata
+  count: 2
+- name: Specialized
+  count: 4
+notes: >-
+  Official Octav Labs MCP server. Runs locally over stdio (npx). Exposes 14 tools
+  mapping to the Octav REST API (portfolio, wallet, nav, transactions, historical
+  snapshots, chains/protocols metadata, and specialized crypto data). No hosted /
+  remote MCP endpoint is published; the server is user-run with a local API key.

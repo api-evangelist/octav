@@ -1,0 +1,46 @@
+generated: '2026-07-20'
+method: searched
+source: https://github.com/Octav-Labs/octav-cli
+official: true
+name: octav
+language: rust
+repository: https://github.com/Octav-Labs/octav-cli
+install:
+- method: shell
+  command: curl -sSf https://raw.githubusercontent.com/Octav-Labs/octav-cli/main/install.sh | sh
+- method: cargo
+  command: cargo install octav
+- method: source
+  command: git clone https://github.com/Octav-Labs/octav-cli && cargo build --release
+config: ~/.octav/config.json
+auth:
+  command: octav auth set-key <KEY>
+  env: OCTAV_API_KEY
+features:
+- Interactive terminal dashboard (Overview, Holdings, Protocols, Transactions) with token icons
+- Local image cache at ~/.octav/cache/images/
+command_groups:
+- group: auth
+  commands:
+  - {name: 'auth set-key <KEY>', description: Store API key in ~/.octav/config.json}
+  - {name: auth show, description: Show current API key source and masked value}
+- group: portfolio
+  commands:
+  - {name: portfolio get, description: Full portfolio including DeFi positions, cost: 1 credit/address}
+  - {name: portfolio wallet, description: Wallet holdings only (excludes DeFi protocols), cost: 1 credit/address}
+  - {name: portfolio nav, description: 'Net asset value in a currency (USD/EUR/GBP/JPY/CNY)', cost: 1 credit/address}
+  - {name: portfolio token-overview, description: Aggregated token distribution across chains for a date, cost: 1 credit/address}
+- group: transactions
+  commands:
+  - {name: transactions get, description: 'Transaction history with filtering (chain, type, date range) and pagination', cost: 1 credit/address}
+  - {name: transactions sync, description: Trigger transaction synchronization, cost: 1 credit/address}
+- group: historical
+  commands:
+  - {name: historical get, description: Portfolio snapshot for a specific date, cost: 1 credit/address}
+  - {name: historical subscribe-snapshot, description: Subscribe to automatic daily portfolio snapshots}
+- group: dashboard
+  commands:
+  - {name: dashboard, description: Launch interactive terminal UI for a set of addresses}
+- group: credits
+  commands:
+  - {name: credits, description: Check credit balance (free)}

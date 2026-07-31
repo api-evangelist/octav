@@ -1,0 +1,33 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/octav-openapi-original.json; https://octav.fi
+standards:
+- id: oauth2
+  conforms: false
+  evidence: securityScheme is http bearer (API key), not oauth2
+- id: openid-connect
+  conforms: false
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors returned as application/json or text/plain, not application/problem+json
+- id: rfc8594-sunset-header
+  conforms: false
+- id: json-api
+  conforms: false
+- id: rest-json
+  conforms: true
+  evidence: JSON over HTTPS REST API, OpenAPI 3.0 published
+- id: pagination
+  conforms: true
+  evidence: limit/offset/cursor/sort parameters across list endpoints
+- id: rate-limit-headers
+  conforms: true
+  evidence: X-RateLimit-Limit/Remaining/Reset + Retry-After returned on every response
+- id: soc2
+  conforms: true
+  evidence: Octav states SOC 2 Type 1 & Type 2 certification on octav.fi
+compliance:
+  programs:
+  - SOC 2 Type 1
+  - SOC 2 Type 2
+  published_at: https://octav.fi

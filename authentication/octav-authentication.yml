@@ -1,0 +1,24 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/octav-openapi-original.json
+docs: https://docs.octav.fi/api/authentication
+summary:
+  types:
+  - http
+  scheme: bearer
+  token: API key issued from the developer portal, sent as a Bearer token
+  key_management: Create/name/rotate keys at https://data.octav.fi (API Keys section); key shown once and cannot be retrieved later
+  best_practices:
+  - store keys in environment variables (OCTAV_API_KEY), never hardcode or commit
+  - rotate keys periodically; use distinct keys per environment (prod/staging/dev/CI)
+  - monitor usage and set alerts in the developer portal
+  test_endpoint: GET /v1/credits (free) to verify authentication at zero cost
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  in: header
+  header: Authorization
+  format: 'Authorization: Bearer <API_KEY>'
+  sources:
+  - openapi/octav-openapi-original.json

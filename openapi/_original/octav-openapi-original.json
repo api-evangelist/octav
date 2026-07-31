@@ -1,0 +1,2868 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Octav API",
+    "description": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Octav Support",
+      "url": "https://octav.fi",
+      "email": "info@octav.fi"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.octav.fi/v1",
+      "description": "Production API"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "ValidatorDetails": {
+        "type": "object",
+        "properties": {
+          "validator": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "number",
+                "description": "Validator index"
+              },
+              "pubkey": {
+                "type": "string",
+                "description": "BLS pubkey (lowercase 0x-prefixed)"
+              },
+              "slashed": {
+                "type": "boolean",
+                "description": "Whether the validator has been slashed"
+              },
+              "status": {
+                "type": "string",
+                "description": "Validator lifecycle status",
+                "enum": [
+                  "pending",
+                  "active_ongoing",
+                  "active_exiting",
+                  "active_slashed",
+                  "exited_unslashed",
+                  "exited_slashed",
+                  "withdrawal_possible",
+                  "withdrawal_done"
+                ]
+              }
+            }
+          },
+          "lifecycle": {
+            "type": "object",
+            "properties": {
+              "activationEpoch": {
+                "type": "number",
+                "nullable": true,
+                "description": "Epoch when the validator became active"
+              },
+              "activationTimestamp": {
+                "type": "number",
+                "nullable": true,
+                "description": "Unix timestamp of activation"
+              },
+              "exitEpoch": {
+                "type": "number",
+                "nullable": true,
+                "description": "Epoch when the validator exited or will exit"
+              },
+              "withdrawableEpoch": {
+                "type": "number",
+                "nullable": true,
+                "description": "Epoch when withdrawal becomes possible"
+              }
+            }
+          },
+          "balance": {
+            "type": "object",
+            "properties": {
+              "actual": {
+                "type": "string",
+                "description": "Current balance in wei"
+              },
+              "effective": {
+                "type": "string",
+                "description": "Effective balance in wei (used for reward/penalty calculations)"
+              }
+            }
+          },
+          "withdrawalCredentials": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "number",
+                "description": "Credential prefix byte (0 = BLS, 1 = EVM address)"
+              },
+              "credential": {
+                "type": "string",
+                "description": "Full credential hex string"
+              },
+              "address": {
+                "type": "string",
+                "nullable": true,
+                "description": "EVM withdrawal address (0x01 prefix only, otherwise null)"
+              }
+            }
+          }
+        }
+      },
+      "ValidatorRewardSummary": {
+        "type": "object",
+        "properties": {
+          "epochStart": {
+            "type": "number",
+            "description": "First epoch in this bucket"
+          },
+          "epochEnd": {
+            "type": "number",
+            "description": "Last epoch in this bucket"
+          },
+          "timestampStart": {
+            "type": "number",
+            "description": "Unix timestamp of bucket start"
+          },
+          "timestampEnd": {
+            "type": "number",
+            "description": "Unix timestamp of bucket end"
+          },
+          "dateStart": {
+            "type": "string",
+            "description": "ISO date string of bucket start"
+          },
+          "dateEnd": {
+            "type": "string",
+            "description": "ISO date string of bucket end"
+          },
+          "consensusReward": {
+            "type": "string",
+            "description": "Consensus layer reward in wei"
+          },
+          "consensusPotentialReward": {
+            "type": "string",
+            "description": "Maximum possible consensus reward in wei"
+          },
+          "consensusEfficiency": {
+            "type": "number",
+            "nullable": true,
+            "description": "Ratio of actual to potential consensus reward (0–1), or null if not computable"
+          },
+          "executionReward": {
+            "type": "string",
+            "description": "Execution layer (MEV + tips) reward in wei"
+          },
+          "attestationsIncluded": {
+            "type": "number",
+            "description": "Number of attestations included on-chain"
+          },
+          "attestationsMissed": {
+            "type": "number",
+            "description": "Number of attestations missed"
+          },
+          "syncParticipations": {
+            "type": "number",
+            "description": "Sync committee participations"
+          },
+          "syncMissed": {
+            "type": "number",
+            "description": "Sync committee slots missed"
+          },
+          "proposedBlocks": {
+            "type": "number",
+            "description": "Blocks proposed"
+          },
+          "missedBlocks": {
+            "type": "number",
+            "description": "Block proposals missed"
+          },
+          "mevBlocks": {
+            "type": "number",
+            "description": "Blocks proposed with MEV"
+          },
+          "endEffectiveBalance": {
+            "type": "string",
+            "description": "Effective balance at end of bucket in wei"
+          }
+        }
+      },
+      "PaginatedValidatorRewards": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidatorRewardSummary"
+            }
+          },
+          "offset": {
+            "type": "number",
+            "description": "Current pagination offset"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Records per page"
+          },
+          "totalRows": {
+            "type": "number",
+            "description": "Total number of matching buckets"
+          },
+          "pages": {
+            "type": "number",
+            "description": "Total number of pages"
+          }
+        }
+      },
+      "ValidatorWithdrawal": {
+        "type": "object",
+        "properties": {
+          "slot": {
+            "type": "number",
+            "description": "Slot in which the withdrawal was processed"
+          },
+          "epoch": {
+            "type": "number",
+            "description": "Epoch containing the slot"
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "Unix timestamp of the withdrawal"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Withdrawn amount in wei"
+          },
+          "address": {
+            "type": "string",
+            "description": "EVM address that received the withdrawal"
+          },
+          "index": {
+            "type": "number",
+            "description": "Validator index"
+          }
+        }
+      },
+      "PaginatedValidatorWithdrawals": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidatorWithdrawal"
+            }
+          },
+          "offset": {
+            "type": "number",
+            "description": "Current pagination offset"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Records per page"
+          },
+          "totalRows": {
+            "type": "number",
+            "description": "Total number of withdrawals"
+          },
+          "pages": {
+            "type": "number",
+            "description": "Total number of pages"
+          }
+        }
+      },
+      "ValidatorDeposit": {
+        "type": "object",
+        "properties": {
+          "slot": {
+            "type": "number",
+            "description": "Slot in which the deposit was included"
+          },
+          "epoch": {
+            "type": "number",
+            "description": "Epoch containing the slot"
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "Unix timestamp of the deposit"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Deposited amount in wei"
+          },
+          "depositIndex": {
+            "type": "number",
+            "description": "Global deposit contract index"
+          },
+          "withdrawalCredentials": {
+            "type": "string",
+            "description": "Full withdrawal credential hex string"
+          },
+          "withdrawalAddress": {
+            "type": "string",
+            "nullable": true,
+            "description": "EVM withdrawal address (0x01 prefix only, otherwise null)"
+          }
+        }
+      },
+      "PaginatedValidatorDeposits": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidatorDeposit"
+            }
+          },
+          "offset": {
+            "type": "number",
+            "description": "Current pagination offset"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Records per page"
+          },
+          "totalRows": {
+            "type": "number",
+            "description": "Total number of deposits"
+          },
+          "pages": {
+            "type": "number",
+            "description": "Total number of pages"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Input validation failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BeaconForbidden": {
+        "description": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Beacon access requires enterprise subscription. Contact sales."
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid Bearer token",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PaymentRequired": {
+        "description": "Insufficient credit balance. Credit is refunded automatically.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Not enough credits"
+                },
+                "creditsRequired": {
+                  "type": "number",
+                  "example": 1
+                },
+                "creditsAvailable": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "ValidatorNotFound": {
+        "description": "Validator does not exist on mainnet.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Validator not found for index 99999999"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Upstream beacon data error.",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Error fetching validator details"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/portfolio": {
+      "get": {
+        "summary": "Portfolio",
+        "description": "Retrieve portfolio holdings across wallets and DeFi protocols.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getPortfolio",
+        "tags": [
+          "Portfolio"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "EVM or SOL wallet address to retrieve portfolio data for",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+          },
+          {
+            "name": "includeImages",
+            "in": "query",
+            "required": false,
+            "description": "Include image URLs for chains, assets, and protocols",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includeExplorerUrls",
+            "in": "query",
+            "required": false,
+            "description": "Include blockchain explorer URLs for assets and transactions",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "waitForSync",
+            "in": "query",
+            "required": false,
+            "description": "Wait for fresh data if cache is stale",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "The wallet address"
+                    },
+                    "networth": {
+                      "type": "string",
+                      "description": "Total portfolio net worth in USD"
+                    },
+                    "cashBalance": {
+                      "type": "string",
+                      "description": "Available cash balance"
+                    },
+                    "dailyIncome": {
+                      "type": "string",
+                      "description": "Income generated today"
+                    },
+                    "dailyExpense": {
+                      "type": "string",
+                      "description": "Expenses incurred today"
+                    },
+                    "fees": {
+                      "type": "string",
+                      "description": "Total fees in native asset"
+                    },
+                    "feesFiat": {
+                      "type": "string",
+                      "description": "Total fees in USD"
+                    },
+                    "lastUpdated": {
+                      "type": "string",
+                      "description": "Last sync timestamp (milliseconds since epoch)"
+                    },
+                    "assetByProtocols": {
+                      "type": "object",
+                      "description": "Assets organized by protocol"
+                    },
+                    "chains": {
+                      "type": "object",
+                      "description": "Assets organized by blockchain"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/portfolio/at-block": {
+      "get": {
+        "summary": "Portfolio At Block",
+        "description": "Retrieve a single Ethereum address's portfolio valued at a specific historical block. Requires the Portfolio at Block add-on to be enabled for your API key.\n\n**Cost:** Set monthly fee under the Portfolio at Block add-on, plus 1 credit per call\n\n**Rate limit:** 100 requests/min on a dedicated bucket\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getPortfolioAtBlock",
+        "tags": [
+          "Portfolio"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "A single EVM wallet address to retrieve portfolio data for. Only one address is accepted per call.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+          },
+          {
+            "name": "chainKey",
+            "in": "query",
+            "required": true,
+            "description": "Chain the block belongs to. Only ethereum is currently supported.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ethereum"
+              ]
+            },
+            "example": "ethereum"
+          },
+          {
+            "name": "blockNumber",
+            "in": "query",
+            "required": true,
+            "description": "The block number to value the portfolio at. Must be a positive integer.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "example": 19000000
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response — same shape as GET /portfolio (an array with one portfolio for the requested address), each portfolio carrying a top-level blockNumber field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "The wallet address"
+                    },
+                    "blockNumber": {
+                      "type": "string",
+                      "description": "The block number the portfolio was valued at (echoes the blockNumber query parameter, returned as a string)"
+                    },
+                    "networth": {
+                      "type": "string",
+                      "description": "Total portfolio net worth in USD, valued at blockNumber"
+                    },
+                    "cashBalance": {
+                      "type": "string",
+                      "description": "Available cash balance at blockNumber"
+                    },
+                    "assetByProtocols": {
+                      "type": "object",
+                      "description": "Assets organized by protocol, valued at blockNumber"
+                    },
+                    "chains": {
+                      "type": "object",
+                      "description": "Assets organized by blockchain (only ethereum is present)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error — missing/invalid addresses, chainKey, or blockNumber",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Validation Failed"
+                    },
+                    "details": {
+                      "type": "object",
+                      "description": "Joi validation error details, keyed by request segment (e.g. query)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing/invalid API key, or the Portfolio at Block add-on is not enabled for this key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Insufficient credits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — 100 requests/min on this endpoint's dedicated bucket"
+          },
+          "500": {
+            "description": "Upstream failure fetching Portfolio at Block data",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Error fetching block-pinned portfolio information"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/virtual-users": {
+      "get": {
+        "summary": "List Virtual Users",
+        "description": "List all virtual users belonging to the authenticated API user. Requires a Pro subscription — virtual users are created in the [Octav Pro](https://pro.octav.fi) app.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "listVirtualUsers",
+        "tags": [
+          "Virtual Users"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string",
+                        "description": "Virtual user identifier in virtual:<id> format"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Virtual user type (e.g. BALANCE, CEX)"
+                      },
+                      "label": {
+                        "type": "string",
+                        "description": "User-defined label"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "address": "virtual:a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "type": "BALANCE",
+                    "label": "My Virtual Portfolio"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/virtual-users/portfolio": {
+      "get": {
+        "summary": "Virtual Users Portfolio",
+        "description": "Fetch portfolios for one or more virtual users. Works identically to GET /portfolio but uses virtual user addresses. Requires a Pro subscription.\n\n**Cost:** 1 credit per virtual user address\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getVirtualUsersPortfolio",
+        "tags": [
+          "Virtual Users"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "Comma-separated virtual user addresses (from the list endpoint). Format: virtual:<id>. Max 10.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "virtual:a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+          },
+          {
+            "name": "aggregated",
+            "in": "query",
+            "required": false,
+            "description": "Return a single reduced portfolio across all virtual users",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "waitForSync",
+            "in": "query",
+            "required": false,
+            "description": "Wait for fresh data if cache is stale",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includeImages",
+            "in": "query",
+            "required": false,
+            "description": "Include image URLs for chains, assets, and protocols",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includeExplorerUrls",
+            "in": "query",
+            "required": false,
+            "description": "Include blockchain explorer URLs for assets and transactions",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response — same schema as GET /portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string",
+                        "description": "The virtual user address (virtual:<id>)"
+                      },
+                      "networth": {
+                        "type": "string",
+                        "description": "Total portfolio net worth in USD"
+                      },
+                      "cashBalance": {
+                        "type": "string",
+                        "description": "Available cash balance"
+                      },
+                      "dailyIncome": {
+                        "type": "string",
+                        "description": "Income generated today"
+                      },
+                      "dailyExpense": {
+                        "type": "string",
+                        "description": "Expenses incurred today"
+                      },
+                      "fees": {
+                        "type": "string",
+                        "description": "Total fees in native asset"
+                      },
+                      "feesFiat": {
+                        "type": "string",
+                        "description": "Total fees in USD"
+                      },
+                      "lastUpdated": {
+                        "type": "string",
+                        "description": "Last sync timestamp (milliseconds since epoch)"
+                      },
+                      "assetByProtocols": {
+                        "type": "object",
+                        "description": "Assets organized by protocol"
+                      },
+                      "chains": {
+                        "type": "object",
+                        "description": "Assets organized by blockchain"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — one or more virtual user addresses do not belong to this account"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/nav": {
+      "get": {
+        "summary": "Nav",
+        "description": "Retrieve Net Asset Value of an address.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getNav",
+        "tags": [
+          "Nav"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "EVM or SOL wallet address to retrieve Net Asset Value for",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+          },
+          {
+            "name": "waitForSync",
+            "in": "query",
+            "required": false,
+            "description": "Wait for fresh data if cache is stale",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "description": "Currency in which to return the Net Asset Value. Supports fiat and crypto conversion rates.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "USD",
+                "EUR",
+                "CAD",
+                "AED",
+                "CHF",
+                "SGD",
+                "ETH",
+                "SOL",
+                "cbBTC",
+                "EURC",
+                "BNB"
+              ],
+              "default": "USD"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nav": {
+                      "type": "number",
+                      "description": "The Net Asset Value in the requested currency"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "The currency code of the returned value (e.g., USD, EUR, ETH)"
+                    },
+                    "conversionPrice": {
+                      "type": "number",
+                      "description": "The conversion price used. For fiat, the exchange rate from USD. For crypto, the weighted average price in USD across queried wallets."
+                    }
+                  }
+                },
+                "example": {
+                  "nav": 1235564.43,
+                  "currency": "USD",
+                  "conversionPrice": 1
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/wallet": {
+      "get": {
+        "summary": "Wallet",
+        "description": "Get wallet balance and basic information.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getWallet",
+        "tags": [
+          "Wallet"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "EVM or Solana wallet address",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0xddda947f31da53d8f9b05ab5a0bb07713c256e35"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "summary": "Transactions",
+        "description": "Query transaction history with powerful filtering and search.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getTransactions",
+        "tags": [
+          "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "Wallet address (EVM or SOL)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "Number of transactions per page (1-250, recommended 10-50)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 250
+            },
+            "example": 10
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "description": "Pagination offset (0-based)",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 0
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "Sort order by timestamp (DESC=newest first, ASC=oldest first)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DESC",
+                "ASC"
+              ],
+              "default": "DESC"
+            }
+          },
+          {
+            "name": "initialSearchText",
+            "in": "query",
+            "required": false,
+            "description": "Full-text search in transaction assets (token symbols, names, addresses)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "interactingAddresses",
+            "in": "query",
+            "required": false,
+            "description": "Filter by interacting addresses (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "networks",
+            "in": "query",
+            "required": false,
+            "description": "Filter by blockchain networks (comma-separated chain keys)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "txTypes",
+            "in": "query",
+            "required": false,
+            "description": "Filter by transaction types (comma-separated)\n\nSee [Transaction Types](https://octav-0131e508.mintlify.app/api/reference/transaction-types)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "protocols",
+            "in": "query",
+            "required": false,
+            "description": "Filter by protocol keys (comma-separated)\n\nSee [Protocol Keys](https://protocols.octav.fi/)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hideSpam",
+            "in": "query",
+            "required": false,
+            "description": "Exclude spam transactions",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "hideDust",
+            "in": "query",
+            "required": false,
+            "description": "Exclude dust transactions",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "description": "Start of the date range (ISO 8601, UTC). Inclusive: timestamp >= startDate, compared at the exact instant passed. Optional — omit to start from the wallet's first indexed transaction. camelCase only (start_date returns 400).",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-01-01T00:00:00Z"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "description": "End of the date range (ISO 8601, UTC). Rounded up to the end of that calendar day (23:59:59Z); time-of-day is ignored. Inclusive: timestamp <= endOfDay(endDate). Optional. camelCase only (end_date returns 400).",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-12-31T23:59:59Z"
+          },
+          {
+            "name": "tokenId",
+            "in": "query",
+            "required": false,
+            "description": "Filter by NFT token ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/approvals/{chain}": {
+      "get": {
+        "summary": "Token Approvals",
+        "description": "Retrieve ERC-20 token approval (allowance) records for a wallet on a given chain.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getApprovals",
+        "tags": [
+          "Approvals"
+        ],
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "required": true,
+            "description": "Chain identifier",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arbitrum",
+                "avalanche",
+                "base",
+                "binance",
+                "ethereum",
+                "fantom",
+                "gnosis",
+                "linea",
+                "optimism",
+                "polygon"
+              ]
+            },
+            "example": "ethereum"
+          },
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "Wallet address to fetch approvals for",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Results per page (1-100, default 25)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            },
+            "example": 25
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Cursor string from a previous response to fetch the next page",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cursor": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Cursor for the next page. Null when there are no more results."
+                    },
+                    "pageSize": {
+                      "type": "integer",
+                      "description": "Number of items returned in this page"
+                    },
+                    "items": {
+                      "type": "array",
+                      "description": "Array of token approval records",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "block": {
+                            "type": "string",
+                            "description": "Block number where the approval was mined"
+                          },
+                          "timestamp": {
+                            "type": "string",
+                            "description": "ISO 8601 timestamp of the block"
+                          },
+                          "hash": {
+                            "type": "string",
+                            "description": "Transaction hash of the approval"
+                          },
+                          "contract": {
+                            "type": "string",
+                            "description": "Address of the approved token contract"
+                          },
+                          "from": {
+                            "type": "string",
+                            "description": "Wallet address that granted the approval"
+                          },
+                          "to": {
+                            "type": "string",
+                            "description": "Spender address that received the approval"
+                          },
+                          "amount": {
+                            "type": "string",
+                            "description": "Raw approved amount (not decimal-adjusted). Max uint256 = unlimited."
+                          },
+                          "asset": {
+                            "type": "object",
+                            "nullable": true,
+                            "description": "Enriched token metadata (present when token is tracked)",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "symbol": {
+                                "type": "string"
+                              },
+                              "balance": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "decimal": {
+                                "type": "string"
+                              },
+                              "chain": {
+                                "type": "string"
+                              },
+                              "contract": {
+                                "type": "string"
+                              },
+                              "imgSmall": {
+                                "type": "string"
+                              },
+                              "imgLarge": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Upstream provider unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/token-overview": {
+      "get": {
+        "summary": "Token Overview",
+        "description": "Get detailed token breakdown by protocol (PRO only).\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getTokenOverview",
+        "tags": [
+          "Tokens"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "EVM or SOL blockchain address",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "description": "Portfolio snapshot date in YYYY-MM-DD format",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-11-01"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "image": {
+                        "type": "string",
+                        "description": "Token logo URL"
+                      },
+                      "symbol": {
+                        "type": "string",
+                        "description": "Token ticker symbol (e.g. ETH, USDC)"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Full token name"
+                      },
+                      "price": {
+                        "type": "string",
+                        "description": "Token price at the specified date"
+                      },
+                      "balance": {
+                        "type": "string",
+                        "description": "Total quantity held across all positions"
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "Total value in USD"
+                      },
+                      "percentage": {
+                        "type": "string",
+                        "description": "Percentage of total portfolio value"
+                      },
+                      "protocolsDetailed": {
+                        "type": "array",
+                        "description": "Breakdown of token distribution across protocols",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "Protocol identifier"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Protocol display name"
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "Value held in this protocol"
+                            },
+                            "balance": {
+                              "type": "string",
+                              "description": "Quantity held in this protocol"
+                            },
+                            "image": {
+                              "type": "string",
+                              "description": "Protocol logo URL"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/airdrop": {
+      "get": {
+        "summary": "Airdrop",
+        "description": "Check airdrop eligibility (Solana only).\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getAirdrop",
+        "tags": [
+          "Airdrops"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "Solana wallet address to check for airdrops",
+            "schema": {
+              "type": "string"
+            },
+            "example": "J8fo6fHGTD4egvuFE4RRQaBipfcHy5F5YVCcZmmZG6gR"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/historical": {
+      "get": {
+        "summary": "Historical Portfolio",
+        "description": "Retrieve portfolio snapshots from specific dates.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getHistoricalPortfolio",
+        "tags": [
+          "Portfolio"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "EVM or SOL wallet address",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "description": "Date in YYYY-MM-DD format (e.g., 2024-11-01)",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-11-01"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/sync-transactions": {
+      "post": {
+        "summary": "Sync Transactions",
+        "description": "Manually trigger transaction synchronization for an address.\n\n**Cost:** 1 credit + 1 credit per 250 transactions indexed\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "syncWallet",
+        "tags": [
+          "Sync"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "addresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Array of addresses to sync (currently supports 1 address)"
+                  }
+                },
+                "required": [
+                  "addresses"
+                ],
+                "example": {
+                  "addresses": [
+                    "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sync initiated successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Address is syncing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chains": {
+      "get": {
+        "summary": "Chains",
+        "description": "Get all supported blockchain networks.\n\n**Cost:** Free (0 credits)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getChains",
+        "tags": [
+          "Chains"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "chainId": {
+                        "type": "string",
+                        "description": "Blockchain network ID (e.g. \"1\" for Ethereum)"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "Short identifier used in API requests (e.g. \"ethereum\")"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Human-readable chain name (e.g. \"Ethereum\")"
+                      },
+                      "symbol": {
+                        "type": "string",
+                        "description": "Native token symbol (e.g. \"ETH\")"
+                      },
+                      "color": {
+                        "type": "string",
+                        "description": "Hex color code for UI display (e.g. \"#627EEA\")"
+                      },
+                      "imgSmall": {
+                        "type": "string",
+                        "description": "URL to small chain icon"
+                      },
+                      "imgLarge": {
+                        "type": "string",
+                        "description": "URL to large chain icon"
+                      },
+                      "explorerTokenUrl": {
+                        "type": "string",
+                        "description": "Block explorer URL template for tokens"
+                      },
+                      "explorerTransactionUrl": {
+                        "type": "string",
+                        "description": "Block explorer URL template for transactions"
+                      },
+                      "explorerAddressUrl": {
+                        "type": "string",
+                        "description": "Block explorer URL template for addresses"
+                      },
+                      "blockscoutExplorerAddressUrl": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Blockscout explorer URL for addresses (null if unavailable)"
+                      },
+                      "blockscoutExplorerTokenUrl": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Blockscout explorer URL for tokens (null if unavailable)"
+                      },
+                      "blockscoutExplorerTransactionUrl": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Blockscout explorer URL for transactions (null if unavailable)"
+                      },
+                      "isPortfolioSupported": {
+                        "type": "boolean",
+                        "description": "Whether portfolio tracking is supported on this chain"
+                      },
+                      "isTransactionsSupported": {
+                        "type": "boolean",
+                        "description": "Whether transaction history is supported on this chain"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized — invalid or missing Bearer token"
+          },
+          "429": {
+            "description": "Too Many Requests — rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/chains/{chainKey}/protocols": {
+      "get": {
+        "summary": "Protocols",
+        "description": "List DeFi protocols available on a specific chain.\n\n**Cost:** Free (0 credits)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getProtocols",
+        "tags": [
+          "Chains"
+        ],
+        "parameters": [
+          {
+            "name": "chainKey",
+            "in": "path",
+            "required": true,
+            "description": "Chain identifier (e.g. \"ethereum\", \"solana\", \"arbitrum\"). Must match a chain's `key` field from the Chains endpoint.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ethereum"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of protocols per page (1-100)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "description": "Array of protocol objects",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "description": "Unique protocol identifier"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Protocol display name (e.g. \"Uniswap\")"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "Protocol key (e.g. \"uniswap\")"
+                          },
+                          "imgSmall": {
+                            "type": "string",
+                            "description": "URL to small protocol icon"
+                          },
+                          "imgLarge": {
+                            "type": "string",
+                            "description": "URL to large protocol icon"
+                          },
+                          "isUserProtocol": {
+                            "type": "boolean",
+                            "description": "True if this is a user-created custom protocol"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "Pagination metadata",
+                      "properties": {
+                        "page": {
+                          "type": "integer",
+                          "description": "Current page number"
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Items per page"
+                        },
+                        "hasMore": {
+                          "type": "boolean",
+                          "description": "Whether more pages are available"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error — invalid page or limit values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized — invalid or missing Bearer token"
+          },
+          "404": {
+            "description": "Chain not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests — rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/contract-protocol": {
+      "get": {
+        "summary": "Contract Protocol",
+        "description": "Look up which DeFi protocol a contract address belongs to. Provide a `chain` to resolve a single protocol on that chain, or omit it to search by address across all chains.\n\n**Cost:** 5 credits per lookup. The credits are refunded if no protocol is found (404).\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getContractProtocol",
+        "tags": [
+          "Contract Protocol"
+        ],
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "query",
+            "required": true,
+            "description": "The contract address to look up (EVM `0x…` or Solana base58).",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x1f98431c8ad98523631ae4a59f267346ea31f984"
+          },
+          {
+            "name": "chain",
+            "in": "query",
+            "required": false,
+            "description": "Chain key (e.g. `ethereum`, `arbitrum`, `base`, `polygon`, `solana`). If omitted, the endpoint returns every chain the address is known on.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ethereum"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Protocol match. Returns a single `{ protocol }` object when `chain` is provided, or a `{ protocols }` array (each entry tagged with its `chainKey`) when `chain` is omitted. The array is unordered.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "description": "Returned when `chain` is provided (single match)",
+                      "properties": {
+                        "protocol": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Protocol display name",
+                              "example": "Uniswap V3"
+                            },
+                            "key": {
+                              "type": "string",
+                              "description": "Protocol key",
+                              "example": "uniswap-v3"
+                            },
+                            "imgSmall": {
+                              "type": "string",
+                              "description": "URL to small protocol icon"
+                            },
+                            "imgLarge": {
+                              "type": "string",
+                              "description": "URL to large protocol icon"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "description": "Returned when `chain` is omitted (all matches across chains)",
+                      "properties": {
+                        "protocols": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "Protocol display name",
+                                "example": "Uniswap V3"
+                              },
+                              "key": {
+                                "type": "string",
+                                "description": "Protocol key",
+                                "example": "uniswap-v3"
+                              },
+                              "imgSmall": {
+                                "type": "string",
+                                "description": "URL to small protocol icon"
+                              },
+                              "imgLarge": {
+                                "type": "string",
+                                "description": "URL to large protocol icon"
+                              },
+                              "chainKey": {
+                                "type": "string",
+                                "description": "Chain the match belongs to",
+                                "example": "ethereum"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error — `contract` is missing"
+          },
+          "401": {
+            "description": "Missing/invalid API key or no access to the endpoint",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Insufficient credits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "creditsNeeded": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No protocol match (credit refunded)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No protocol found for contract <contract> [on <chain>]"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "retryAfter": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Error while searching for contract protocol"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/status": {
+      "get": {
+        "summary": "Status",
+        "description": "Check synchronization status and data freshness for addresses.\n\n**Cost:** Free (0 credits)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getStatus",
+        "tags": [
+          "Status"
+        ],
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "description": "Wallet address (EVM or SOL)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/credits": {
+      "get": {
+        "summary": "Credits",
+        "description": "Check your API credit balance.\n\n**Cost:** Free (0 credits)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getCredits",
+        "tags": [
+          "Credits"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credits": {
+                      "type": "number",
+                      "description": "Remaining API credits"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/beacon/validators/details/index/{index}": {
+      "get": {
+        "summary": "Validator Details by Index",
+        "description": "Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorDetailsByIndex",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "description": "Non-negative validator index",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 123456
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validator details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/beacon/validators/details/pubkey/{pubkey}": {
+      "get": {
+        "summary": "Validator Details by Pubkey",
+        "description": "Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorDetailsByPubkey",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "pubkey",
+            "in": "path",
+            "required": true,
+            "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.",
+            "schema": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{96}$"
+            },
+            "example": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validator details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/beacon/validators/rewards/index/{index}": {
+      "get": {
+        "summary": "Validator Rewards by Index",
+        "description": "Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorRewardsByIndex",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "description": "Non-negative validator index",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 123456
+          },
+          {
+            "name": "rangeType",
+            "in": "query",
+            "required": true,
+            "description": "Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs).",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "timestamp",
+                "epoch"
+              ]
+            },
+            "example": "timestamp"
+          },
+          {
+            "name": "rangeFrom",
+            "in": "query",
+            "required": true,
+            "description": "Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 1704067200
+          },
+          {
+            "name": "rangeTo",
+            "in": "query",
+            "required": true,
+            "description": "End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 1706745600
+          },
+          {
+            "name": "granularity",
+            "in": "query",
+            "required": true,
+            "description": "Bucket size for aggregation.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "epoch",
+                "day",
+                "week",
+                "month"
+              ]
+            },
+            "example": "day"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Pagination offset.",
+            "schema": {
+              "type": "number",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of records to return. Max 10.",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated validator rewards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedValidatorRewards"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/beacon/validators/rewards/pubkey/{pubkey}": {
+      "get": {
+        "summary": "Validator Rewards by Pubkey",
+        "description": "Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorRewardsByPubkey",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "pubkey",
+            "in": "path",
+            "required": true,
+            "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.",
+            "schema": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{96}$"
+            },
+            "example": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07"
+          },
+          {
+            "name": "rangeType",
+            "in": "query",
+            "required": true,
+            "description": "Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs).",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "timestamp",
+                "epoch"
+              ]
+            },
+            "example": "timestamp"
+          },
+          {
+            "name": "rangeFrom",
+            "in": "query",
+            "required": true,
+            "description": "Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 1704067200
+          },
+          {
+            "name": "rangeTo",
+            "in": "query",
+            "required": true,
+            "description": "End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 1706745600
+          },
+          {
+            "name": "granularity",
+            "in": "query",
+            "required": true,
+            "description": "Bucket size for aggregation.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "epoch",
+                "day",
+                "week",
+                "month"
+              ]
+            },
+            "example": "day"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Pagination offset.",
+            "schema": {
+              "type": "number",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of records to return. Max 10.",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated validator rewards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedValidatorRewards"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/beacon/validators/withdrawals/index/{index}": {
+      "get": {
+        "summary": "Validator Withdrawals by Index",
+        "description": "Paginated list of withdrawals processed for a validator by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorWithdrawalsByIndex",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "description": "Non-negative validator index",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 123456
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Pagination offset.",
+            "schema": {
+              "type": "number",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of records to return. Max 10.",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated validator withdrawals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedValidatorWithdrawals"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/beacon/validators/withdrawals/pubkey/{pubkey}": {
+      "get": {
+        "summary": "Validator Withdrawals by Pubkey",
+        "description": "Paginated list of withdrawals processed for a validator by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorWithdrawalsByPubkey",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "pubkey",
+            "in": "path",
+            "required": true,
+            "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.",
+            "schema": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{96}$"
+            },
+            "example": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Pagination offset.",
+            "schema": {
+              "type": "number",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of records to return. Max 10.",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated validator withdrawals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedValidatorWithdrawals"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/beacon/validators/deposits/index/{index}": {
+      "get": {
+        "summary": "Validator Deposits by Index",
+        "description": "Paginated list of deposits made to a validator by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorDepositsByIndex",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "description": "Non-negative validator index",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 123456
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Pagination offset.",
+            "schema": {
+              "type": "number",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of records to return. Max 10.",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated validator deposits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedValidatorDeposits"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/beacon/validators/deposits/pubkey/{pubkey}": {
+      "get": {
+        "summary": "Validator Deposits by Pubkey",
+        "description": "Paginated list of deposits made to a validator by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+        "operationId": "getValidatorDepositsByPubkey",
+        "tags": [
+          "Beacon Validators"
+        ],
+        "parameters": [
+          {
+            "name": "pubkey",
+            "in": "path",
+            "required": true,
+            "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive.",
+            "schema": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{96}$"
+            },
+            "example": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Pagination offset.",
+            "schema": {
+              "type": "number",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of records to return. Max 10.",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated validator deposits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedValidatorDeposits"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/BeaconForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/ValidatorNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Portfolio",
+      "description": "Portfolio and holdings endpoints"
+    },
+    {
+      "name": "Virtual Users",
+      "description": "Virtual user management and portfolio endpoints (Pro only)"
+    },
+    {
+      "name": "Nav",
+      "description": "Net Asset Value endpoints"
+    },
+    {
+      "name": "Wallet",
+      "description": "Wallet information endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transaction history endpoints"
+    },
+    {
+      "name": "Approvals",
+      "description": "Token approval endpoints"
+    },
+    {
+      "name": "Tokens",
+      "description": "Token data endpoints"
+    },
+    {
+      "name": "Airdrops",
+      "description": "Airdrop eligibility endpoints"
+    },
+    {
+      "name": "Sync",
+      "description": "Data synchronization endpoints"
+    },
+    {
+      "name": "Status",
+      "description": "Status check endpoints"
+    },
+    {
+      "name": "Credits",
+      "description": "Credit balance endpoints"
+    },
+    {
+      "name": "Chains",
+      "description": "Blockchain network and protocol endpoints"
+    },
+    {
+      "name": "Contract Protocol",
+      "description": "Resolve a contract address to its DeFi protocol"
+    },
+    {
+      "name": "Beacon Validators",
+      "description": "Ethereum beacon chain validator endpoints — details, rewards, withdrawals, and deposits (mainnet only)"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+generated: '2026-07-20'
+method: searched
+note: >-
+  Probed /.well-known/ discovery paths on the API host (api.octav.fi), docs host
+  (docs.octav.fi), and website (octav.fi). No 200 responses. The API host returns
+  401 for every path (all requests require a Bearer token); docs and website
+  return 404. No well-known documents were found to save.
+hosts:
+- host: https://api.octav.fi
+  documents:
+  - {path: /.well-known/security.txt, status: 401}
+  - {path: /.well-known/openid-configuration, status: 401}
+  - {path: /.well-known/oauth-authorization-server, status: 401}
+  - {path: /.well-known/api-catalog, status: 401}
+  - {path: /.well-known/ai-plugin.json, status: 401}
+- host: https://docs.octav.fi
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+- host: https://octav.fi
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
