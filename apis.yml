@@ -315,7 +315,7 @@ common:
 - type: Authentication
   url: authentication/octav-authentication.yml
 - type: OpenAPI
-  url: openapi/octav-openapi-original.json
+  url: openapi/_original/octav-openapi-original.json
 - type: Overlay
   url: overlays/octav-openapi-overlay.yaml
 - type: MCPServer
