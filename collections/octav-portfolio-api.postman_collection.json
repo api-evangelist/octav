@@ -1,0 +1,660 @@
+{
+  "item": [
+    {
+      "id": "23cd9165-4da7-48e9-9b46-3f79629eb47a",
+      "name": "Portfolio",
+      "description": {
+        "content": "Portfolio and holdings endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cdb46d20-0a32-434f-aa9f-9bf54f0c9dc9",
+          "name": "Portfolio",
+          "request": {
+            "name": "Portfolio",
+            "description": {
+              "content": "Retrieve portfolio holdings across wallets and DeFi protocols.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "portfolio"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) EVM or SOL wallet address to retrieve portfolio data for"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeImages",
+                  "value": "false",
+                  "description": "Include image URLs for chains, assets, and protocols"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeExplorerUrls",
+                  "value": "false",
+                  "description": "Include blockchain explorer URLs for assets and transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "waitForSync",
+                  "value": "false",
+                  "description": "Wait for fresh data if cache is stale"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "31cf038d-bbb1-4883-a25f-eeb4538f47bd",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "includeImages",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeExplorerUrls",
+                      "value": "false"
+                    },
+                    {
+                      "key": "waitForSync",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address\": \"string\",\n  \"networth\": \"string\",\n  \"cashBalance\": \"string\",\n  \"dailyIncome\": \"string\",\n  \"dailyExpense\": \"string\",\n  \"fees\": \"string\",\n  \"feesFiat\": \"string\",\n  \"lastUpdated\": \"string\",\n  \"assetByProtocols\": {},\n  \"chains\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "07e4e4c3-57cb-4961-97c1-e9df79511690",
+          "name": "Portfolio At Block",
+          "request": {
+            "name": "Portfolio At Block",
+            "description": {
+              "content": "Retrieve a single Ethereum address's portfolio valued at a specific historical block. Requires the Portfolio at Block add-on to be enabled for your API key.\n\n**Cost:** Set monthly fee under the Portfolio at Block add-on, plus 1 credit per call\n\n**Rate limit:** 100 requests/min on a dedicated bucket\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "portfolio",
+                "at-block"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) A single EVM wallet address to retrieve portfolio data for. Only one address is accepted per call."
+                },
+                {
+                  "disabled": false,
+                  "key": "chainKey",
+                  "value": "<string>",
+                  "description": "(Required) Chain the block belongs to. Only ethereum is currently supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "blockNumber",
+                  "value": "<integer>",
+                  "description": "(Required) The block number to value the portfolio at. Must be a positive integer."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "11eae5db-e4b9-4a81-a32b-0b50ecd87ce4",
+              "name": "Successful response — same shape as GET /portfolio (an array with one portfolio for the requested address), each portfolio carrying a top-level blockNumber field",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio",
+                    "at-block"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "chainKey",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "blockNumber",
+                      "value": "19000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address\": \"string\",\n  \"blockNumber\": \"string\",\n  \"networth\": \"string\",\n  \"cashBalance\": \"string\",\n  \"assetByProtocols\": {},\n  \"chains\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58eff076-5641-4303-8f6b-268a3c56c5e0",
+              "name": "Validation error — missing/invalid addresses, chainKey, or blockNumber",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio",
+                    "at-block"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "chainKey",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "blockNumber",
+                      "value": "19000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validation Failed\",\n  \"details\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "476424a1-d661-4efa-a081-fb947cb9fe0e",
+              "name": "Missing/invalid API key, or the Portfolio at Block add-on is not enabled for this key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio",
+                    "at-block"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "chainKey",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "blockNumber",
+                      "value": "19000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "302cd988-658d-4da7-bfe0-6c141a28b0cc",
+              "name": "Insufficient credits",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio",
+                    "at-block"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "chainKey",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "blockNumber",
+                      "value": "19000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea19782b-c66b-46b9-a34d-bb98474e014f",
+              "name": "Rate limit exceeded — 100 requests/min on this endpoint's dedicated bucket",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio",
+                    "at-block"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "chainKey",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "blockNumber",
+                      "value": "19000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c8eb5e67-c009-4516-94ea-0364871a1850",
+              "name": "Upstream failure fetching Portfolio at Block data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio",
+                    "at-block"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "chainKey",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "blockNumber",
+                      "value": "19000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching block-pinned portfolio information",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a68d19ec-7578-41b8-b6a3-f9a77b3e75f7",
+          "name": "Historical Portfolio",
+          "request": {
+            "name": "Historical Portfolio",
+            "description": {
+              "content": "Retrieve portfolio snapshots from specific dates.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) EVM or SOL wallet address"
+                },
+                {
+                  "disabled": false,
+                  "key": "date",
+                  "value": "<date>",
+                  "description": "(Required) Date in YYYY-MM-DD format (e.g., 2024-11-01)"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a6b54b54-3965-4200-beb6-fc8cbcefa070",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "date",
+                      "value": "2024-11-01"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.octav.fi/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "61d44956-0b23-4c1d-aac6-2adee395b0a8",
+    "name": "Octav Airdrops Portfolio API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics\n\nContact Support:\n Name: Octav Support\n Email: info@octav.fi",
+      "type": "text/plain"
+    }
+  }
+}

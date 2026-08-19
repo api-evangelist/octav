@@ -1,0 +1,251 @@
+{
+  "item": [
+    {
+      "id": "aa0e6903-5870-4ade-ab2b-a71d2b7ff0f3",
+      "name": "Transactions",
+      "description": {
+        "content": "Transaction history endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9c57923b-70c6-4d45-8145-18ff003e34c1",
+          "name": "Transactions",
+          "request": {
+            "name": "Transactions",
+            "description": {
+              "content": "Query transaction history with powerful filtering and search.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) Wallet address (EVM or SOL)"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "(Required) Number of transactions per page (1-250, recommended 10-50)"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "(Required) Pagination offset (0-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "DESC",
+                  "description": "Sort order by timestamp (DESC=newest first, ASC=oldest first)"
+                },
+                {
+                  "disabled": false,
+                  "key": "initialSearchText",
+                  "value": "<string>",
+                  "description": "Full-text search in transaction assets (token symbols, names, addresses)"
+                },
+                {
+                  "disabled": false,
+                  "key": "interactingAddresses",
+                  "value": "<string>",
+                  "description": "Filter by interacting addresses (comma-separated)"
+                },
+                {
+                  "disabled": false,
+                  "key": "networks",
+                  "value": "<string>",
+                  "description": "Filter by blockchain networks (comma-separated chain keys)"
+                },
+                {
+                  "disabled": false,
+                  "key": "txTypes",
+                  "value": "<string>",
+                  "description": "Filter by transaction types (comma-separated)\n\nSee [Transaction Types](https://octav-0131e508.mintlify.app/api/reference/transaction-types)"
+                },
+                {
+                  "disabled": false,
+                  "key": "protocols",
+                  "value": "<string>",
+                  "description": "Filter by protocol keys (comma-separated)\n\nSee [Protocol Keys](https://protocols.octav.fi/)"
+                },
+                {
+                  "disabled": false,
+                  "key": "hideSpam",
+                  "value": "false",
+                  "description": "Exclude spam transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "hideDust",
+                  "value": "false",
+                  "description": "Exclude dust transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<dateTime>",
+                  "description": "Start of the date range (ISO 8601, UTC). Inclusive: timestamp >= startDate, compared at the exact instant passed. Optional — omit to start from the wallet's first indexed transaction. camelCase only (start_date returns 400)."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<dateTime>",
+                  "description": "End of the date range (ISO 8601, UTC). Rounded up to the end of that calendar day (23:59:59Z); time-of-day is ignored. Inclusive: timestamp <= endOfDay(endDate). Optional. camelCase only (end_date returns 400)."
+                },
+                {
+                  "disabled": false,
+                  "key": "tokenId",
+                  "value": "<string>",
+                  "description": "Filter by NFT token ID"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "39314a84-fd12-4097-a991-3408c52216ed",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "DESC"
+                    },
+                    {
+                      "key": "initialSearchText",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interactingAddresses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "networks",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "txTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "protocols",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "hideSpam",
+                      "value": "false"
+                    },
+                    {
+                      "key": "hideDust",
+                      "value": "false"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2024-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2024-12-31T23:59:59Z"
+                    },
+                    {
+                      "key": "tokenId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.octav.fi/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c19e139d-2011-4ecb-8989-7cc6dabef900",
+    "name": "Octav Airdrops Transactions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics\n\nContact Support:\n Name: Octav Support\n Email: info@octav.fi",
+      "type": "text/plain"
+    }
+  }
+}

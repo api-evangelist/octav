@@ -1,0 +1,3763 @@
+{
+  "item": [
+    {
+      "id": "840e68a8-b6d0-410e-8743-4daeb41be6d1",
+      "name": "Beacon Validators",
+      "description": {
+        "content": "Ethereum beacon chain validator endpoints — details, rewards, withdrawals, and deposits (mainnet only)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c8a0e26d-08ad-4018-811e-702646db8736",
+          "name": "Validator Details by Index",
+          "request": {
+            "name": "Validator Details by Index",
+            "description": {
+              "content": "Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "details",
+                "index",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "index",
+                  "description": "(Required) Non-negative validator index"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "08b0f9c3-992a-4940-8ec2-64681e34cc82",
+              "name": "Validator details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"validator\": {\n    \"index\": 2091.391627461242,\n    \"pubkey\": \"string\",\n    \"slashed\": true,\n    \"status\": \"exited_slashed\"\n  },\n  \"lifecycle\": {\n    \"activationEpoch\": 3378.4319289567975,\n    \"activationTimestamp\": 4803.284353725386,\n    \"exitEpoch\": 2439.674807013047,\n    \"withdrawableEpoch\": 8561.704276360162\n  },\n  \"balance\": {\n    \"actual\": \"string\",\n    \"effective\": \"string\"\n  },\n  \"withdrawalCredentials\": {\n    \"prefix\": 7551.823016893244,\n    \"credential\": \"string\",\n    \"address\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a5fccfc1-f13c-4153-bb53-2e8578e7918f",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41fa2643-0f6b-4bae-94d2-704bbcee8ef3",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6f2e01e-1446-4a79-a913-bd4ca5b13d39",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60b22649-c866-41c7-8b33-75c276ee3a25",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "074947c7-9109-4f4b-bf4d-ba6ff95f2f55",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a8ca056f-5d5e-4696-af9f-b704e329a0ea",
+          "name": "Validator Details by Pubkey",
+          "request": {
+            "name": "Validator Details by Pubkey",
+            "description": {
+              "content": "Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "details",
+                "pubkey",
+                ":pubkey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pubkey",
+                  "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "797fb434-de72-4524-8182-820942a1f5f5",
+              "name": "Validator details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"validator\": {\n    \"index\": 2091.391627461242,\n    \"pubkey\": \"string\",\n    \"slashed\": true,\n    \"status\": \"exited_slashed\"\n  },\n  \"lifecycle\": {\n    \"activationEpoch\": 3378.4319289567975,\n    \"activationTimestamp\": 4803.284353725386,\n    \"exitEpoch\": 2439.674807013047,\n    \"withdrawableEpoch\": 8561.704276360162\n  },\n  \"balance\": {\n    \"actual\": \"string\",\n    \"effective\": \"string\"\n  },\n  \"withdrawalCredentials\": {\n    \"prefix\": 7551.823016893244,\n    \"credential\": \"string\",\n    \"address\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9f9973e-dbc1-4675-a95d-298f0c562ef9",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7acea03-cc72-4e58-9d4b-646b307e6c05",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1b59fa5-2587-4e21-b857-5d76af34ad95",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2578f472-b759-4d9b-9724-cfb54cac79b4",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90af4b96-5cce-4a04-aa50-1a192a6f9975",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "details",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "96eb3367-a03a-4bb3-97b7-cd8b7f511c73",
+          "name": "Validator Rewards by Index",
+          "request": {
+            "name": "Validator Rewards by Index",
+            "description": {
+              "content": "Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "rewards",
+                "index",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "rangeType",
+                  "value": "<string>",
+                  "description": "(Required) Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs)."
+                },
+                {
+                  "disabled": false,
+                  "key": "rangeFrom",
+                  "value": "<integer>",
+                  "description": "(Required) Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType."
+                },
+                {
+                  "disabled": false,
+                  "key": "rangeTo",
+                  "value": "<integer>",
+                  "description": "(Required) End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType."
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>",
+                  "description": "(Required) Bucket size for aggregation."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of records to return. Max 10."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "index",
+                  "description": "(Required) Non-negative validator index"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fbb8761b-95d9-4a13-a994-cebecac7ac2d",
+              "name": "Paginated validator rewards",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"epochStart\": 9065.225272945114,\n      \"epochEnd\": 3107.0771635416404,\n      \"timestampStart\": 6917.044838312203,\n      \"timestampEnd\": 1502.4788389185362,\n      \"dateStart\": \"string\",\n      \"dateEnd\": \"string\",\n      \"consensusReward\": \"string\",\n      \"consensusPotentialReward\": \"string\",\n      \"consensusEfficiency\": 5593.0892550515955,\n      \"executionReward\": \"string\",\n      \"attestationsIncluded\": 4227.48829674099,\n      \"attestationsMissed\": 6479.048178709723,\n      \"syncParticipations\": 5873.4586481258775,\n      \"syncMissed\": 8314.315277628495,\n      \"proposedBlocks\": 5135.796546242308,\n      \"missedBlocks\": 5791.10746884638,\n      \"mevBlocks\": 5803.4577766980965,\n      \"endEffectiveBalance\": \"string\"\n    },\n    {\n      \"epochStart\": 9487.490498054674,\n      \"epochEnd\": 3746.710281662805,\n      \"timestampStart\": 5649.14259078953,\n      \"timestampEnd\": 5629.042930912418,\n      \"dateStart\": \"string\",\n      \"dateEnd\": \"string\",\n      \"consensusReward\": \"string\",\n      \"consensusPotentialReward\": \"string\",\n      \"consensusEfficiency\": 8572.27026541716,\n      \"executionReward\": \"string\",\n      \"attestationsIncluded\": 4756.345059389782,\n      \"attestationsMissed\": 7083.063783522261,\n      \"syncParticipations\": 3133.4494646051403,\n      \"syncMissed\": 6468.35779485286,\n      \"proposedBlocks\": 8423.172687651082,\n      \"missedBlocks\": 7802.345507060913,\n      \"mevBlocks\": 2251.0846279698094,\n      \"endEffectiveBalance\": \"string\"\n    }\n  ],\n  \"offset\": 1337.3378951208747,\n  \"limit\": 5988.971819488351,\n  \"totalRows\": 4539.083063260512,\n  \"pages\": 2658.224055296483\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "65c7cf46-063f-4e46-b0de-e81bbc313f69",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a77fbbf9-62e7-4dbd-afe5-ab8559a83ca2",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5665e9fa-6ced-4ec0-99c7-8edfc944cdf1",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a30d0e79-db7e-43b7-9dac-26c2900662c8",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34ab935d-d2f3-4cf1-9f0c-2886c5924223",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "588cd11c-3bed-4b69-985b-1802467cf93e",
+          "name": "Validator Rewards by Pubkey",
+          "request": {
+            "name": "Validator Rewards by Pubkey",
+            "description": {
+              "content": "Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "rewards",
+                "pubkey",
+                ":pubkey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "rangeType",
+                  "value": "<string>",
+                  "description": "(Required) Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs)."
+                },
+                {
+                  "disabled": false,
+                  "key": "rangeFrom",
+                  "value": "<integer>",
+                  "description": "(Required) Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType."
+                },
+                {
+                  "disabled": false,
+                  "key": "rangeTo",
+                  "value": "<integer>",
+                  "description": "(Required) End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType."
+                },
+                {
+                  "disabled": false,
+                  "key": "granularity",
+                  "value": "<string>",
+                  "description": "(Required) Bucket size for aggregation."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of records to return. Max 10."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pubkey",
+                  "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7556838e-7972-4eeb-9258-ebb96924cbeb",
+              "name": "Paginated validator rewards",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"epochStart\": 6737.455281633544,\n      \"epochEnd\": 2190.9742451966063,\n      \"timestampStart\": 7666.239998749465,\n      \"timestampEnd\": 1053.5371402853555,\n      \"dateStart\": \"string\",\n      \"dateEnd\": \"string\",\n      \"consensusReward\": \"string\",\n      \"consensusPotentialReward\": \"string\",\n      \"consensusEfficiency\": 6987.067314166889,\n      \"executionReward\": \"string\",\n      \"attestationsIncluded\": 9852.94497010301,\n      \"attestationsMissed\": 3482.9335996063583,\n      \"syncParticipations\": 7672.90288872065,\n      \"syncMissed\": 8465.48628219472,\n      \"proposedBlocks\": 1812.8140245536129,\n      \"missedBlocks\": 9902.559608462501,\n      \"mevBlocks\": 9374.324493054219,\n      \"endEffectiveBalance\": \"string\"\n    },\n    {\n      \"epochStart\": 7533.38998313662,\n      \"epochEnd\": 3346.824793971078,\n      \"timestampStart\": 973.6545697226995,\n      \"timestampEnd\": 4220.40517439404,\n      \"dateStart\": \"string\",\n      \"dateEnd\": \"string\",\n      \"consensusReward\": \"string\",\n      \"consensusPotentialReward\": \"string\",\n      \"consensusEfficiency\": 5969.80974731456,\n      \"executionReward\": \"string\",\n      \"attestationsIncluded\": 6183.257817237541,\n      \"attestationsMissed\": 1552.1117721773835,\n      \"syncParticipations\": 7583.458567685031,\n      \"syncMissed\": 7487.76857539721,\n      \"proposedBlocks\": 4388.936003728721,\n      \"missedBlocks\": 4614.094470749497,\n      \"mevBlocks\": 8570.016779712885,\n      \"endEffectiveBalance\": \"string\"\n    }\n  ],\n  \"offset\": 8751.264166517483,\n  \"limit\": 5003.240239398573,\n  \"totalRows\": 1353.5243476827875,\n  \"pages\": 2127.110895049289\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e936836c-684c-42db-93e9-36a2eee09dd3",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b68f890-029c-4058-8489-6b7003c98a08",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ec1d530-a997-4ca2-943a-4ca1322e6378",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27b50607-6eb9-423a-9f17-958cb830916c",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "50b67cb3-e34f-4c17-99ed-b076463b0710",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "rewards",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rangeType",
+                      "value": "timestamp"
+                    },
+                    {
+                      "key": "rangeFrom",
+                      "value": "1704067200"
+                    },
+                    {
+                      "key": "rangeTo",
+                      "value": "1706745600"
+                    },
+                    {
+                      "key": "granularity",
+                      "value": "day"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "deb5e23f-3cf2-4994-98eb-32b6f9071169",
+          "name": "Validator Withdrawals by Index",
+          "request": {
+            "name": "Validator Withdrawals by Index",
+            "description": {
+              "content": "Paginated list of withdrawals processed for a validator by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "withdrawals",
+                "index",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of records to return. Max 10."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "index",
+                  "description": "(Required) Non-negative validator index"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b8b4a408-dffc-435c-b405-b8178c15f6fa",
+              "name": "Paginated validator withdrawals",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"slot\": 7084.047402054339,\n      \"epoch\": 3015.260926490877,\n      \"timestamp\": 234.8376985337819,\n      \"amount\": \"string\",\n      \"address\": \"string\",\n      \"index\": 9636.402932869605\n    },\n    {\n      \"slot\": 2417.9035108965077,\n      \"epoch\": 3109.2882288129454,\n      \"timestamp\": 2345.839979519394,\n      \"amount\": \"string\",\n      \"address\": \"string\",\n      \"index\": 8447.907123907298\n    }\n  ],\n  \"offset\": 1231.3571707383808,\n  \"limit\": 4059.647199535905,\n  \"totalRows\": 8701.12278074746,\n  \"pages\": 7567.319528933282\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5fcd439b-d625-4b48-8535-19b9e1885a74",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb0afb04-a73a-4eaf-8ad0-f68df8fc4264",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5efaf4ac-ae50-49ba-9215-9137cb7cacef",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "042aa384-cdc9-44f8-a0b5-160158dc02d6",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7dd81a05-63e8-4d04-ae94-53a5e44c3036",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5f697cdb-7d09-417d-bd19-42c3f20c61d6",
+          "name": "Validator Withdrawals by Pubkey",
+          "request": {
+            "name": "Validator Withdrawals by Pubkey",
+            "description": {
+              "content": "Paginated list of withdrawals processed for a validator by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "withdrawals",
+                "pubkey",
+                ":pubkey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of records to return. Max 10."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pubkey",
+                  "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c9867a9c-59c9-49c1-8b3a-973a9534e478",
+              "name": "Paginated validator withdrawals",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"slot\": 7358.691572411349,\n      \"epoch\": 5896.407640564635,\n      \"timestamp\": 2370.2474009315265,\n      \"amount\": \"string\",\n      \"address\": \"string\",\n      \"index\": 6717.536089280816\n    },\n    {\n      \"slot\": 9526.280778782526,\n      \"epoch\": 4026.5740995427313,\n      \"timestamp\": 9992.938914024351,\n      \"amount\": \"string\",\n      \"address\": \"string\",\n      \"index\": 3259.9025227706557\n    }\n  ],\n  \"offset\": 3147.664459173608,\n  \"limit\": 2863.9837609504084,\n  \"totalRows\": 7828.96834778647,\n  \"pages\": 751.5548658940896\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13c9e67b-e310-4e6e-88b8-730a9fe5da1c",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc8f4547-246d-444c-ba8e-d53092d3143b",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35011a1f-5d92-40a3-b821-72c1ff661cd2",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34b7d40e-7501-4807-aae3-315e2842137b",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b58fe5a-62d6-401d-8318-c1253ad25da6",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "withdrawals",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "237f6b51-6078-4a3e-b159-21b51f2b47c5",
+          "name": "Validator Deposits by Index",
+          "request": {
+            "name": "Validator Deposits by Index",
+            "description": {
+              "content": "Paginated list of deposits made to a validator by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "deposits",
+                "index",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of records to return. Max 10."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "index",
+                  "description": "(Required) Non-negative validator index"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "226a0f4a-86f5-4697-aa90-9ab41794c55b",
+              "name": "Paginated validator deposits",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"slot\": 1633.6025854136371,\n      \"epoch\": 6717.435854846891,\n      \"timestamp\": 5758.047959982629,\n      \"amount\": \"string\",\n      \"depositIndex\": 2908.0738596725632,\n      \"withdrawalCredentials\": \"string\",\n      \"withdrawalAddress\": \"string\"\n    },\n    {\n      \"slot\": 8891.035790331789,\n      \"epoch\": 5057.297819493262,\n      \"timestamp\": 1066.6474401326964,\n      \"amount\": \"string\",\n      \"depositIndex\": 2997.4154285962163,\n      \"withdrawalCredentials\": \"string\",\n      \"withdrawalAddress\": \"string\"\n    }\n  ],\n  \"offset\": 4830.816746062612,\n  \"limit\": 8603.561071490109,\n  \"totalRows\": 3329.7327056977865,\n  \"pages\": 4322.616580391069\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8605923-0756-4f13-a4b4-3f983631867b",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3653260a-45f3-4525-b3f1-b6e5f7aeb7ca",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "102f2767-de55-4693-af28-1eb913a68e3b",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe7d6908-1dcd-4258-8984-844e7b4346f8",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7a21c30-4f05-4291-bd17-4ab84c7e19a2",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "index",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "index",
+                      "description": "(Required) Non-negative validator index"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "91b93279-ef6d-41e5-a764-60f54a82e17d",
+          "name": "Validator Deposits by Pubkey",
+          "request": {
+            "name": "Validator Deposits by Pubkey",
+            "description": {
+              "content": "Paginated list of deposits made to a validator by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beacon",
+                "validators",
+                "deposits",
+                "pubkey",
+                ":pubkey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of records to return. Max 10."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pubkey",
+                  "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "85119ac9-79c0-4b89-b802-2815fdcdce25",
+              "name": "Paginated validator deposits",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"slot\": 7209.57395693196,\n      \"epoch\": 7266.2693708804645,\n      \"timestamp\": 8677.81579930557,\n      \"amount\": \"string\",\n      \"depositIndex\": 9867.704669952886,\n      \"withdrawalCredentials\": \"string\",\n      \"withdrawalAddress\": \"string\"\n    },\n    {\n      \"slot\": 9963.535521908681,\n      \"epoch\": 4114.596476902125,\n      \"timestamp\": 5095.6915831307415,\n      \"amount\": \"string\",\n      \"depositIndex\": 8283.10466344692,\n      \"withdrawalCredentials\": \"string\",\n      \"withdrawalAddress\": \"string\"\n    }\n  ],\n  \"offset\": 2283.509592832874,\n  \"limit\": 1699.080642019961,\n  \"totalRows\": 491.27541671540985,\n  \"pages\": 7540.593770266052\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09db8d8e-931c-4506-bc15-67527281b72d",
+              "name": "Input validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40c4050a-aaa8-41cc-bd76-b2f8a0e2da9b",
+              "name": "Missing or invalid Bearer token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c097810-a5d5-4c20-9968-66fda6ac07c8",
+              "name": "Forbidden — beacon access requires enterprise subscription. Contact sales.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Beacon access requires enterprise subscription. Contact sales.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdc283e8-662a-4f14-8be5-75d482c29edd",
+              "name": "Validator does not exist on mainnet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Validator not found for index 99999999\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a2161ff-420e-4260-8d91-fcb4710a67b5",
+              "name": "Upstream beacon data error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beacon",
+                    "validators",
+                    "deposits",
+                    "pubkey",
+                    ":pubkey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pubkey",
+                      "description": "(Required) 48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Error fetching validator details",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.octav.fi/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a9341a2c-57ff-428b-9dbc-942baca52992",
+    "name": "Octav Airdrops Beacon Validators API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics\n\nContact Support:\n Name: Octav Support\n Email: info@octav.fi",
+      "type": "text/plain"
+    }
+  }
+}

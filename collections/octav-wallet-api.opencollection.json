@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octav Airdrops Wallet API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Wallet",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/wallet",
+            "params": [
+              {
+                "name": "addresses",
+                "value": "0xddda947f31da53d8f9b05ab5a0bb07713c256e35",
+                "type": "query",
+                "description": "EVM or Solana wallet address"
+              }
+            ]
+          },
+          "docs": "Get wallet balance and basic information.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

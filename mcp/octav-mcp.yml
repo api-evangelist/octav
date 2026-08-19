@@ -40,8 +40,16 @@ tool_groups:
   count: 2
 - name: Specialized
   count: 4
-notes: >-
-  Official Octav Labs MCP server. Runs locally over stdio (npx). Exposes 14 tools
-  mapping to the Octav REST API (portfolio, wallet, nav, transactions, historical
-  snapshots, chains/protocols metadata, and specialized crypto data). No hosted /
-  remote MCP endpoint is published; the server is user-run with a local API key.
+notes: Official Octav Labs MCP server. Runs locally over stdio (npx). Exposes 14 tools mapping to the
+  Octav REST API (portfolio, wallet, nav, transactions, historical snapshots, chains/protocols metadata,
+  and specialized crypto data). No hosted / remote MCP endpoint is published; the server is user-run with
+  a local API key.
+deployment:
+  mode: none
+  endpoint: https://data.octav.fi
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census

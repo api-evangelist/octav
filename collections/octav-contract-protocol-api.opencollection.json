@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octav Airdrops Contract Protocol API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contract Protocol",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Contract Protocol",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/contract-protocol",
+            "params": [
+              {
+                "name": "contract",
+                "value": "0x1f98431c8ad98523631ae4a59f267346ea31f984",
+                "type": "query",
+                "description": "The contract address to look up (EVM `0x…` or Solana base58)."
+              },
+              {
+                "name": "chain",
+                "value": "ethereum",
+                "type": "query",
+                "description": "Chain key (e.g. `ethereum`, `arbitrum`, `base`, `polygon`, `solana`). If omitted, the endpoint returns every chain the address is known on."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Look up which DeFi protocol a contract address belongs to. Provide a `chain` to resolve a single protocol on that chain, or omit it to search by address across all chains.\n\n**Cost:** 5 credits per lookup. The credits are refunded if no protocol is found (404).\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

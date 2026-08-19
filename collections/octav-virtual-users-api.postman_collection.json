@@ -1,0 +1,328 @@
+{
+  "item": [
+    {
+      "id": "970cc7bc-b408-44c0-bc1d-32f8886bead2",
+      "name": "Virtual Users",
+      "description": {
+        "content": "Virtual user management and portfolio endpoints (Pro only)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c8fb88d6-98af-47d1-a3f8-9c811a56d98a",
+          "name": "List Virtual Users",
+          "request": {
+            "name": "List Virtual Users",
+            "description": {
+              "content": "List all virtual users belonging to the authenticated API user. Requires a Pro subscription — virtual users are created in the [Octav Pro](https://pro.octav.fi) app.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "virtual-users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "25ef3d2a-e888-4e28-88a0-aff998bfef68",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "virtual-users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"address\": \"virtual:a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"type\": \"BALANCE\",\n    \"label\": \"My Virtual Portfolio\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2776a34f-8731-485f-ba87-017998a92682",
+          "name": "Virtual Users Portfolio",
+          "request": {
+            "name": "Virtual Users Portfolio",
+            "description": {
+              "content": "Fetch portfolios for one or more virtual users. Works identically to GET /portfolio but uses virtual user addresses. Requires a Pro subscription.\n\n**Cost:** 1 credit per virtual user address\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "virtual-users",
+                "portfolio"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) Comma-separated virtual user addresses (from the list endpoint). Format: virtual:<id>. Max 10."
+                },
+                {
+                  "disabled": false,
+                  "key": "aggregated",
+                  "value": "false",
+                  "description": "Return a single reduced portfolio across all virtual users"
+                },
+                {
+                  "disabled": false,
+                  "key": "waitForSync",
+                  "value": "false",
+                  "description": "Wait for fresh data if cache is stale"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeImages",
+                  "value": "false",
+                  "description": "Include image URLs for chains, assets, and protocols"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeExplorerUrls",
+                  "value": "false",
+                  "description": "Include blockchain explorer URLs for assets and transactions"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9dbcd47f-4af3-4daa-bfac-dca853daf391",
+              "name": "Successful response — same schema as GET /portfolio",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "virtual-users",
+                    "portfolio"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "virtual:a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    {
+                      "key": "aggregated",
+                      "value": "false"
+                    },
+                    {
+                      "key": "waitForSync",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeImages",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeExplorerUrls",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"address\": \"string\",\n    \"networth\": \"string\",\n    \"cashBalance\": \"string\",\n    \"dailyIncome\": \"string\",\n    \"dailyExpense\": \"string\",\n    \"fees\": \"string\",\n    \"feesFiat\": \"string\",\n    \"lastUpdated\": \"string\",\n    \"assetByProtocols\": {},\n    \"chains\": {}\n  },\n  {\n    \"address\": \"string\",\n    \"networth\": \"string\",\n    \"cashBalance\": \"string\",\n    \"dailyIncome\": \"string\",\n    \"dailyExpense\": \"string\",\n    \"fees\": \"string\",\n    \"feesFiat\": \"string\",\n    \"lastUpdated\": \"string\",\n    \"assetByProtocols\": {},\n    \"chains\": {}\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f6779b8-4519-4a4b-a191-373e1b476fc5",
+              "name": "Forbidden — one or more virtual user addresses do not belong to this account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "virtual-users",
+                    "portfolio"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "virtual:a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    {
+                      "key": "aggregated",
+                      "value": "false"
+                    },
+                    {
+                      "key": "waitForSync",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeImages",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeExplorerUrls",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.octav.fi/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0893d355-fad0-40fb-ae0e-c7d5066103ee",
+    "name": "Octav Airdrops Virtual Users API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics\n\nContact Support:\n Name: Octav Support\n Email: info@octav.fi",
+      "type": "text/plain"
+    }
+  }
+}

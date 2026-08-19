@@ -1,0 +1,121 @@
+{
+  "item": [
+    {
+      "id": "f0bd1eb0-8176-4618-b972-eca04ba29c66",
+      "name": "Airdrops",
+      "description": {
+        "content": "Airdrop eligibility endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cabc28ed-76d5-4388-aa2e-26317d1f959f",
+          "name": "Airdrop",
+          "request": {
+            "name": "Airdrop",
+            "description": {
+              "content": "Check airdrop eligibility (Solana only).\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "airdrop"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) Solana wallet address to check for airdrops"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a97f4120-fc8e-45e6-abb1-498bb99aa3da",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "airdrop"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "J8fo6fHGTD4egvuFE4RRQaBipfcHy5F5YVCcZmmZG6gR"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.octav.fi/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "18ea8ffc-9cbe-4904-a255-999d3474f43c",
+    "name": "Octav Airdrops API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics\n\nContact Support:\n Name: Octav Support\n Email: info@octav.fi",
+      "type": "text/plain"
+    }
+  }
+}

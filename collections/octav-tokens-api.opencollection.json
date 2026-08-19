@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octav Airdrops Tokens API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Token Overview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/token-overview",
+            "params": [
+              {
+                "name": "addresses",
+                "value": "0x6426af179aabebe47666f345d69fd9079673f6cd",
+                "type": "query",
+                "description": "EVM or SOL blockchain address"
+              },
+              {
+                "name": "date",
+                "value": "2024-11-01",
+                "type": "query",
+                "description": "Portfolio snapshot date in YYYY-MM-DD format"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get detailed token breakdown by protocol (PRO only).\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

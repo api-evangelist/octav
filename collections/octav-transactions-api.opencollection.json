@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octav Airdrops Transactions API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/transactions",
+            "params": [
+              {
+                "name": "addresses",
+                "value": "0x6426af179aabebe47666f345d69fd9079673f6cd",
+                "type": "query",
+                "description": "Wallet address (EVM or SOL)"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Number of transactions per page (1-250, recommended 10-50)"
+              },
+              {
+                "name": "offset",
+                "value": "0",
+                "type": "query",
+                "description": "Pagination offset (0-based)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order by timestamp (DESC=newest first, ASC=oldest first)"
+              },
+              {
+                "name": "initialSearchText",
+                "value": "",
+                "type": "query",
+                "description": "Full-text search in transaction assets (token symbols, names, addresses)"
+              },
+              {
+                "name": "interactingAddresses",
+                "value": "",
+                "type": "query",
+                "description": "Filter by interacting addresses (comma-separated)"
+              },
+              {
+                "name": "networks",
+                "value": "",
+                "type": "query",
+                "description": "Filter by blockchain networks (comma-separated chain keys)"
+              },
+              {
+                "name": "txTypes",
+                "value": "",
+                "type": "query",
+                "description": "Filter by transaction types (comma-separated)\n\nSee [Transaction Types](https://octav-0131e508.mintlify.app/api/reference/transaction-types)"
+              },
+              {
+                "name": "protocols",
+                "value": "",
+                "type": "query",
+                "description": "Filter by protocol keys (comma-separated)\n\nSee [Protocol Keys](https://protocols.octav.fi/)"
+              },
+              {
+                "name": "hideSpam",
+                "value": "",
+                "type": "query",
+                "description": "Exclude spam transactions"
+              },
+              {
+                "name": "hideDust",
+                "value": "",
+                "type": "query",
+                "description": "Exclude dust transactions"
+              },
+              {
+                "name": "startDate",
+                "value": "2024-01-01T00:00:00Z",
+                "type": "query",
+                "description": "Start of the date range (ISO 8601, UTC). Inclusive: timestamp >= startDate, compared at the exact instant passed. Optional — omit to start from the wallet's first indexed transaction. camelCase only (start_date returns 400)."
+              },
+              {
+                "name": "endDate",
+                "value": "2024-12-31T23:59:59Z",
+                "type": "query",
+                "description": "End of the date range (ISO 8601, UTC). Rounded up to the end of that calendar day (23:59:59Z); time-of-day is ignored. Inclusive: timestamp <= endOfDay(endDate). Optional. camelCase only (end_date returns 400)."
+              },
+              {
+                "name": "tokenId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by NFT token ID"
+              }
+            ]
+          },
+          "docs": "Query transaction history with powerful filtering and search.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

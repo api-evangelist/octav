@@ -1,0 +1,65 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octav Airdrops Approvals API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Approvals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Token Approvals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/approvals/:chain",
+            "params": [
+              {
+                "name": "chain",
+                "value": "ethereum",
+                "type": "path",
+                "description": "Chain identifier"
+              },
+              {
+                "name": "addresses",
+                "value": "0x6426af179aabebe47666f345d69fd9079673f6cd",
+                "type": "query",
+                "description": "Wallet address to fetch approvals for"
+              },
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Results per page (1-100, default 25)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor string from a previous response to fetch the next page"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve ERC-20 token approval (allowance) records for a wallet on a given chain.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

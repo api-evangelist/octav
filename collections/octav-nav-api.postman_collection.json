@@ -1,0 +1,159 @@
+{
+  "item": [
+    {
+      "id": "a484046e-58c5-41c1-8bec-49b36b34348b",
+      "name": "Nav",
+      "description": {
+        "content": "Net Asset Value endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3f77a427-235f-4324-a10e-a083fe0145a0",
+          "name": "Nav",
+          "request": {
+            "name": "Nav",
+            "description": {
+              "content": "Retrieve Net Asset Value of an address.\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "nav"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) EVM or SOL wallet address to retrieve Net Asset Value for"
+                },
+                {
+                  "disabled": false,
+                  "key": "waitForSync",
+                  "value": "false",
+                  "description": "Wait for fresh data if cache is stale"
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "USD",
+                  "description": "Currency in which to return the Net Asset Value. Supports fiat and crypto conversion rates."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "13149a51-0582-4bb0-a940-1a1534797f07",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "nav"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "waitForSync",
+                      "value": "false"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "USD"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"nav\": 1235564.43,\n  \"currency\": \"USD\",\n  \"conversionPrice\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.octav.fi/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3ffb2c56-81fa-458c-a0ed-05caba9b5fec",
+    "name": "Octav Airdrops Nav API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics\n\nContact Support:\n Name: Octav Support\n Email: info@octav.fi",
+      "type": "text/plain"
+    }
+  }
+}

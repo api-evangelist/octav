@@ -1,0 +1,328 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octav Airdrops Beacon Validators API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Beacon Validators",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Validator Details by Index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/details/index/:index",
+            "params": [
+              {
+                "name": "index",
+                "value": "123456",
+                "type": "path",
+                "description": "Non-negative validator index"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Validator Details by Pubkey",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/details/pubkey/:pubkey",
+            "params": [
+              {
+                "name": "pubkey",
+                "value": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07",
+                "type": "path",
+                "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get current state, lifecycle epochs, balance, and withdrawal credentials for a single validator by its BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Validator Rewards by Index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/rewards/index/:index",
+            "params": [
+              {
+                "name": "index",
+                "value": "123456",
+                "type": "path",
+                "description": "Non-negative validator index"
+              },
+              {
+                "name": "rangeType",
+                "value": "timestamp",
+                "type": "query",
+                "description": "Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs)."
+              },
+              {
+                "name": "rangeFrom",
+                "value": "1704067200",
+                "type": "query",
+                "description": "Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType."
+              },
+              {
+                "name": "rangeTo",
+                "value": "1706745600",
+                "type": "query",
+                "description": "End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType."
+              },
+              {
+                "name": "granularity",
+                "value": "day",
+                "type": "query",
+                "description": "Bucket size for aggregation."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return. Max 10."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Validator Rewards by Pubkey",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/rewards/pubkey/:pubkey",
+            "params": [
+              {
+                "name": "pubkey",
+                "value": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07",
+                "type": "path",
+                "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+              },
+              {
+                "name": "rangeType",
+                "value": "timestamp",
+                "type": "query",
+                "description": "Determines how rangeFrom/rangeTo are interpreted. `timestamp` = Unix seconds (max range 31,536,000 s); `epoch` = beacon epoch numbers (max range 82,125 epochs)."
+              },
+              {
+                "name": "rangeFrom",
+                "value": "1704067200",
+                "type": "query",
+                "description": "Start of the range (inclusive). Must be ≥ 0 and ≤ rangeTo. Interpreted per rangeType."
+              },
+              {
+                "name": "rangeTo",
+                "value": "1706745600",
+                "type": "query",
+                "description": "End of the range (inclusive). Must be ≥ 0. Interpreted per rangeType."
+              },
+              {
+                "name": "granularity",
+                "value": "day",
+                "type": "query",
+                "description": "Bucket size for aggregation."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return. Max 10."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated reward buckets aggregated by epoch, day, week, or month for a validator identified by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Validator Withdrawals by Index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/withdrawals/index/:index",
+            "params": [
+              {
+                "name": "index",
+                "value": "123456",
+                "type": "path",
+                "description": "Non-negative validator index"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return. Max 10."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated list of withdrawals processed for a validator by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Validator Withdrawals by Pubkey",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/withdrawals/pubkey/:pubkey",
+            "params": [
+              {
+                "name": "pubkey",
+                "value": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07",
+                "type": "path",
+                "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return. Max 10."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated list of withdrawals processed for a validator by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Validator Deposits by Index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/deposits/index/:index",
+            "params": [
+              {
+                "name": "index",
+                "value": "123456",
+                "type": "path",
+                "description": "Non-negative validator index"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return. Max 10."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated list of deposits made to a validator by index.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Validator Deposits by Pubkey",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/beacon/validators/deposits/pubkey/:pubkey",
+            "params": [
+              {
+                "name": "pubkey",
+                "value": "0xb03d97937ae39b38a44f90141dcf7f0420c3b9b21caee1a7603046bc9237f5c96b61714474249dafe0a20af583a4fc07",
+                "type": "path",
+                "description": "48-byte BLS pubkey, hex-encoded with `0x` prefix (96 hex characters). Case-insensitive."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return. Max 10."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated list of deposits made to a validator by BLS pubkey.\n\n**Cost:** 1 credit per call. Automatically refunded on 4xx/5xx responses.\n\n**Access:** Requires portfolio entitlement.\n\n**Rate limit:** 360 req/min (shared with portfolio bucket)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,149 @@
+{
+  "item": [
+    {
+      "id": "51cda43c-3d4a-4623-8417-681c2ae42eed",
+      "name": "Tokens",
+      "description": {
+        "content": "Token data endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8a3cefeb-1b0b-4876-9c65-fcb8ef07f2f7",
+          "name": "Token Overview",
+          "request": {
+            "name": "Token Overview",
+            "description": {
+              "content": "Get detailed token breakdown by protocol (PRO only).\n\n**Cost:** 1 credit per call\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "token-overview"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "<string>",
+                  "description": "(Required) EVM or SOL blockchain address"
+                },
+                {
+                  "disabled": false,
+                  "key": "date",
+                  "value": "<date>",
+                  "description": "(Required) Portfolio snapshot date in YYYY-MM-DD format"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "969acb15-def7-4717-8ebb-72b781090e28",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "token-overview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "addresses",
+                      "value": "0x6426af179aabebe47666f345d69fd9079673f6cd"
+                    },
+                    {
+                      "key": "date",
+                      "value": "2024-11-01"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"image\": \"string\",\n    \"symbol\": \"string\",\n    \"name\": \"string\",\n    \"price\": \"string\",\n    \"balance\": \"string\",\n    \"value\": \"string\",\n    \"percentage\": \"string\",\n    \"protocolsDetailed\": [\n      {\n        \"key\": \"string\",\n        \"name\": \"string\",\n        \"value\": \"string\",\n        \"balance\": \"string\",\n        \"image\": \"string\"\n      },\n      {\n        \"key\": \"string\",\n        \"name\": \"string\",\n        \"value\": \"string\",\n        \"balance\": \"string\",\n        \"image\": \"string\"\n      }\n    ]\n  },\n  {\n    \"image\": \"string\",\n    \"symbol\": \"string\",\n    \"name\": \"string\",\n    \"price\": \"string\",\n    \"balance\": \"string\",\n    \"value\": \"string\",\n    \"percentage\": \"string\",\n    \"protocolsDetailed\": [\n      {\n        \"key\": \"string\",\n        \"name\": \"string\",\n        \"value\": \"string\",\n        \"balance\": \"string\",\n        \"image\": \"string\"\n      },\n      {\n        \"key\": \"string\",\n        \"name\": \"string\",\n        \"value\": \"string\",\n        \"balance\": \"string\",\n        \"image\": \"string\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.octav.fi/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9e2e9959-116b-46d5-8357-a6b3978f5106",
+    "name": "Octav Airdrops Tokens API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics\n\nContact Support:\n Name: Octav Support\n Email: info@octav.fi",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octav Airdrops Chains API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chains",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Chains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/chains",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all supported blockchain networks.\n\n**Cost:** Free (0 credits)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        },
+        {
+          "info": {
+            "name": "Protocols",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.octav.fi/v1/chains/:chainKey/protocols",
+            "params": [
+              {
+                "name": "chainKey",
+                "value": "ethereum",
+                "type": "path",
+                "description": "Chain identifier (e.g. \"ethereum\", \"solana\", \"arbitrum\"). Must match a chain's `key` field from the Chains endpoint."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of protocols per page (1-100)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List DeFi protocols available on a specific chain.\n\n**Cost:** Free (0 credits)\n\n**Get your API key:** [Dev Portal](https://data.octav.fi)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
