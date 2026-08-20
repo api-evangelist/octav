@@ -42,6 +42,16 @@ tags:
 - Analytics
 - Web3
 - Financial Data
+- Wallets
+tags_raw:
+- Company
+- Cryptocurrency
+- Blockchain
+- Portfolio
+- DeFi
+- Analytics
+- Web3
+- Financial Data
 - Wallet
 maintainers:
 - FN: Kin Lane
@@ -169,6 +179,8 @@ apis:
   humanURL: https://docs.octav.fi/api/introduction
   baseURL: https://api.octav.fi/v1
   tags:
+  - NAV
+  tags_raw:
   - Nav
   properties:
   - type: OpenAPI
@@ -259,6 +271,8 @@ apis:
   humanURL: https://docs.octav.fi/api/introduction
   baseURL: https://api.octav.fi/v1
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
@@ -295,6 +309,8 @@ apis:
   humanURL: https://docs.octav.fi/api/introduction
   baseURL: https://api.octav.fi/v1
   tags:
+  - Wallets
+  tags_raw:
   - Wallet
   properties:
   - type: OpenAPI
