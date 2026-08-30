@@ -191,7 +191,7 @@ apis:
   humanURL: https://docs.octav.fi/api/introduction
   baseURL: https://api.octav.fi/v1
   tags:
-  - NAV
+  - Nav
   tags_raw:
   - Nav
   properties:
