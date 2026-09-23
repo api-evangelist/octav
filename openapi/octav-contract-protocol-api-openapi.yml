@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Octav Airdrops Contract Protocol API
+  title: Octav Contract Protocol API
   description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
   version: 1.0.0
   contact:
@@ -25,7 +25,7 @@ paths:
         **Cost:** 5 credits per lookup. The credits are refunded if no protocol is found (404).
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getContractProtocol
       tags:
       - Contract Protocol

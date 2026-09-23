@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Octav Airdrops Beacon Validators API
+  title: Octav Beacon Validators API
   description: Comprehensive blockchain data API for portfolio management, transactions, and DeFi analytics
   version: 1.0.0
   contact:
@@ -31,7 +31,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorDetailsByIndex
       tags:
       - Beacon Validators
@@ -78,7 +78,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorDetailsByPubkey
       tags:
       - Beacon Validators
@@ -125,7 +125,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorRewardsByIndex
       tags:
       - Beacon Validators
@@ -225,7 +225,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorRewardsByPubkey
       tags:
       - Beacon Validators
@@ -325,7 +325,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorWithdrawalsByIndex
       tags:
       - Beacon Validators
@@ -387,7 +387,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorWithdrawalsByPubkey
       tags:
       - Beacon Validators
@@ -449,7 +449,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorDepositsByIndex
       tags:
       - Beacon Validators
@@ -511,7 +511,7 @@ paths:
         **Rate limit:** 360 req/min (shared with portfolio bucket)
 
 
-        **Get your API key:** [Dev Portal](https://data.octav.fi)'
+        **Get your API key:** Dev Portal'
       operationId: getValidatorDepositsByPubkey
       tags:
       - Beacon Validators
@@ -559,54 +559,47 @@ paths:
       security:
       - bearerAuth: []
 components:
-  responses:
-    InternalServerError:
-      description: Upstream beacon data error.
-      content:
-        text/plain:
-          schema:
-            type: string
-            example: Error fetching validator details
-    Unauthorized:
-      description: Missing or invalid Bearer token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Unauthorized
-    ValidatorNotFound:
-      description: Validator does not exist on mainnet.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Validator not found for index 99999999
-    BadRequest:
-      description: Input validation failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-    BeaconForbidden:
-      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Beacon access requires enterprise subscription. Contact sales.
   schemas:
+    PaginatedValidatorRewards:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorRewardSummary'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of matching buckets
+        pages:
+          type: number
+          description: Total number of pages
+    ValidatorWithdrawal:
+      type: object
+      properties:
+        slot:
+          type: number
+          description: Slot in which the withdrawal was processed
+        epoch:
+          type: number
+          description: Epoch containing the slot
+        timestamp:
+          type: number
+          description: Unix timestamp of the withdrawal
+        amount:
+          type: string
+          description: Withdrawn amount in wei
+        address:
+          type: string
+          description: EVM address that received the withdrawal
+        index:
+          type: number
+          description: Validator index
     ValidatorDeposit:
       type: object
       properties:
@@ -629,8 +622,9 @@ components:
           type: string
           description: Full withdrawal credential hex string
         withdrawalAddress:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: EVM withdrawal address (0x01 prefix only, otherwise null)
     PaginatedValidatorWithdrawals:
       type: object
@@ -670,25 +664,65 @@ components:
         pages:
           type: number
           description: Total number of pages
-    PaginatedValidatorRewards:
+    ValidatorRewardSummary:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorRewardSummary'
-        offset:
+        epochStart:
           type: number
-          description: Current pagination offset
-        limit:
+          description: First epoch in this bucket
+        epochEnd:
           type: number
-          description: Records per page
-        totalRows:
+          description: Last epoch in this bucket
+        timestampStart:
           type: number
-          description: Total number of matching buckets
-        pages:
+          description: Unix timestamp of bucket start
+        timestampEnd:
           type: number
-          description: Total number of pages
+          description: Unix timestamp of bucket end
+        dateStart:
+          type: string
+          description: ISO date string of bucket start
+        dateEnd:
+          type: string
+          description: ISO date string of bucket end
+        consensusReward:
+          type: string
+          description: Consensus layer reward in wei
+        consensusPotentialReward:
+          type: string
+          description: Maximum possible consensus reward in wei
+        consensusEfficiency:
+          type:
+          - number
+          - 'null'
+          description: Ratio of actual to potential consensus reward (0–1), or null if not computable
+        executionReward:
+          type: string
+          description: Execution layer (MEV + tips) reward in wei
+        attestationsIncluded:
+          type: number
+          description: Number of attestations included on-chain
+        attestationsMissed:
+          type: number
+          description: Number of attestations missed
+        syncParticipations:
+          type: number
+          description: Sync committee participations
+        syncMissed:
+          type: number
+          description: Sync committee slots missed
+        proposedBlocks:
+          type: number
+          description: Blocks proposed
+        missedBlocks:
+          type: number
+          description: Block proposals missed
+        mevBlocks:
+          type: number
+          description: Blocks proposed with MEV
+        endEffectiveBalance:
+          type: string
+          description: Effective balance at end of bucket in wei
     ValidatorDetails:
       type: object
       properties:
@@ -720,20 +754,24 @@ components:
           type: object
           properties:
             activationEpoch:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
               description: Epoch when the validator became active
             activationTimestamp:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
               description: Unix timestamp of activation
             exitEpoch:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
               description: Epoch when the validator exited or will exit
             withdrawableEpoch:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
               description: Epoch when withdrawal becomes possible
         balance:
           type: object
@@ -754,88 +792,57 @@ components:
               type: string
               description: Full credential hex string
             address:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
               description: EVM withdrawal address (0x01 prefix only, otherwise null)
-    ValidatorWithdrawal:
-      type: object
-      properties:
-        slot:
-          type: number
-          description: Slot in which the withdrawal was processed
-        epoch:
-          type: number
-          description: Epoch containing the slot
-        timestamp:
-          type: number
-          description: Unix timestamp of the withdrawal
-        amount:
-          type: string
-          description: Withdrawn amount in wei
-        address:
-          type: string
-          description: EVM address that received the withdrawal
-        index:
-          type: number
-          description: Validator index
-    ValidatorRewardSummary:
-      type: object
-      properties:
-        epochStart:
-          type: number
-          description: First epoch in this bucket
-        epochEnd:
-          type: number
-          description: Last epoch in this bucket
-        timestampStart:
-          type: number
-          description: Unix timestamp of bucket start
-        timestampEnd:
-          type: number
-          description: Unix timestamp of bucket end
-        dateStart:
-          type: string
-          description: ISO date string of bucket start
-        dateEnd:
-          type: string
-          description: ISO date string of bucket end
-        consensusReward:
-          type: string
-          description: Consensus layer reward in wei
-        consensusPotentialReward:
-          type: string
-          description: Maximum possible consensus reward in wei
-        consensusEfficiency:
-          type: number
-          nullable: true
-          description: Ratio of actual to potential consensus reward (0–1), or null if not computable
-        executionReward:
-          type: string
-          description: Execution layer (MEV + tips) reward in wei
-        attestationsIncluded:
-          type: number
-          description: Number of attestations included on-chain
-        attestationsMissed:
-          type: number
-          description: Number of attestations missed
-        syncParticipations:
-          type: number
-          description: Sync committee participations
-        syncMissed:
-          type: number
-          description: Sync committee slots missed
-        proposedBlocks:
-          type: number
-          description: Blocks proposed
-        missedBlocks:
-          type: number
-          description: Block proposals missed
-        mevBlocks:
-          type: number
-          description: Blocks proposed with MEV
-        endEffectiveBalance:
-          type: string
-          description: Effective balance at end of bucket in wei
+  responses:
+    ValidatorNotFound:
+      description: Validator does not exist on mainnet.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Validator not found for index 99999999
+    BeaconForbidden:
+      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Beacon access requires enterprise subscription. Contact sales.
+    Unauthorized:
+      description: Missing or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+    BadRequest:
+      description: Input validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    InternalServerError:
+      description: Upstream beacon data error.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Error fetching validator details
   securitySchemes:
     bearerAuth:
       type: http
