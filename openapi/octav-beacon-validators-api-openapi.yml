@@ -559,26 +559,54 @@ paths:
       security:
       - bearerAuth: []
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+    BeaconForbidden:
+      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Beacon access requires enterprise subscription. Contact sales.
+    InternalServerError:
+      description: Upstream beacon data error.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Error fetching validator details
+    BadRequest:
+      description: Input validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    ValidatorNotFound:
+      description: Validator does not exist on mainnet.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Validator not found for index 99999999
   schemas:
-    PaginatedValidatorRewards:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorRewardSummary'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of matching buckets
-        pages:
-          type: number
-          description: Total number of pages
     ValidatorWithdrawal:
       type: object
       properties:
@@ -600,6 +628,44 @@ components:
         index:
           type: number
           description: Validator index
+    PaginatedValidatorRewards:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorRewardSummary'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of matching buckets
+        pages:
+          type: number
+          description: Total number of pages
+    PaginatedValidatorDeposits:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorDeposit'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of deposits
+        pages:
+          type: number
+          description: Total number of pages
     ValidatorDeposit:
       type: object
       properties:
@@ -642,25 +708,6 @@ components:
         totalRows:
           type: number
           description: Total number of withdrawals
-        pages:
-          type: number
-          description: Total number of pages
-    PaginatedValidatorDeposits:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorDeposit'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of deposits
         pages:
           type: number
           description: Total number of pages
@@ -796,53 +843,6 @@ components:
               - string
               - 'null'
               description: EVM withdrawal address (0x01 prefix only, otherwise null)
-  responses:
-    ValidatorNotFound:
-      description: Validator does not exist on mainnet.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Validator not found for index 99999999
-    BeaconForbidden:
-      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Beacon access requires enterprise subscription. Contact sales.
-    Unauthorized:
-      description: Missing or invalid Bearer token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Unauthorized
-    BadRequest:
-      description: Input validation failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-    InternalServerError:
-      description: Upstream beacon data error.
-      content:
-        text/plain:
-          schema:
-            type: string
-            example: Error fetching validator details
   securitySchemes:
     bearerAuth:
       type: http
