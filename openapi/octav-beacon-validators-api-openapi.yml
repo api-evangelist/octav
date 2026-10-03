@@ -560,6 +560,15 @@ paths:
       - bearerAuth: []
 components:
   responses:
+    BadRequest:
+      description: Input validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
     Unauthorized:
       description: Missing or invalid Bearer token
       content:
@@ -587,15 +596,6 @@ components:
           schema:
             type: string
             example: Error fetching validator details
-    BadRequest:
-      description: Input validation failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
     ValidatorNotFound:
       description: Validator does not exist on mainnet.
       content:
@@ -607,6 +607,25 @@ components:
                 type: string
                 example: Validator not found for index 99999999
   schemas:
+    PaginatedValidatorDeposits:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorDeposit'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of deposits
+        pages:
+          type: number
+          description: Total number of pages
     ValidatorWithdrawal:
       type: object
       properties:
@@ -628,70 +647,79 @@ components:
         index:
           type: number
           description: Validator index
-    PaginatedValidatorRewards:
+    ValidatorDetails:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorRewardSummary'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of matching buckets
-        pages:
-          type: number
-          description: Total number of pages
-    PaginatedValidatorDeposits:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorDeposit'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of deposits
-        pages:
-          type: number
-          description: Total number of pages
-    ValidatorDeposit:
-      type: object
-      properties:
-        slot:
-          type: number
-          description: Slot in which the deposit was included
-        epoch:
-          type: number
-          description: Epoch containing the slot
-        timestamp:
-          type: number
-          description: Unix timestamp of the deposit
-        amount:
-          type: string
-          description: Deposited amount in wei
-        depositIndex:
-          type: number
-          description: Global deposit contract index
+        validator:
+          type: object
+          properties:
+            index:
+              type: number
+              description: Validator index
+            pubkey:
+              type: string
+              description: BLS pubkey (lowercase 0x-prefixed)
+            slashed:
+              type: boolean
+              description: Whether the validator has been slashed
+            status:
+              type: string
+              description: Validator lifecycle status
+              enum:
+              - pending
+              - active_ongoing
+              - active_exiting
+              - active_slashed
+              - exited_unslashed
+              - exited_slashed
+              - withdrawal_possible
+              - withdrawal_done
+        lifecycle:
+          type: object
+          properties:
+            activationEpoch:
+              type:
+              - number
+              - 'null'
+              description: Epoch when the validator became active
+            activationTimestamp:
+              type:
+              - number
+              - 'null'
+              description: Unix timestamp of activation
+            exitEpoch:
+              type:
+              - number
+              - 'null'
+              description: Epoch when the validator exited or will exit
+            withdrawableEpoch:
+              type:
+              - number
+              - 'null'
+              description: Epoch when withdrawal becomes possible
+        balance:
+          type: object
+          properties:
+            actual:
+              type: string
+              description: Current balance in wei
+            effective:
+              type: string
+              description: Effective balance in wei (used for reward/penalty calculations)
         withdrawalCredentials:
-          type: string
-          description: Full withdrawal credential hex string
-        withdrawalAddress:
-          type:
-          - string
-          - 'null'
-          description: EVM withdrawal address (0x01 prefix only, otherwise null)
+          type: object
+          properties:
+            prefix:
+              type: number
+              description: Credential prefix byte (0 = BLS, 1 = EVM address)
+            credential:
+              type: string
+              description: Full credential hex string
+            address:
+              type:
+              - string
+              - 'null'
+              description: EVM withdrawal address (0x01 prefix only, otherwise null)
     PaginatedValidatorWithdrawals:
       type: object
       properties:
@@ -770,79 +798,51 @@ components:
         endEffectiveBalance:
           type: string
           description: Effective balance at end of bucket in wei
-    ValidatorDetails:
+    PaginatedValidatorRewards:
       type: object
       properties:
-        validator:
-          type: object
-          properties:
-            index:
-              type: number
-              description: Validator index
-            pubkey:
-              type: string
-              description: BLS pubkey (lowercase 0x-prefixed)
-            slashed:
-              type: boolean
-              description: Whether the validator has been slashed
-            status:
-              type: string
-              description: Validator lifecycle status
-              enum:
-              - pending
-              - active_ongoing
-              - active_exiting
-              - active_slashed
-              - exited_unslashed
-              - exited_slashed
-              - withdrawal_possible
-              - withdrawal_done
-        lifecycle:
-          type: object
-          properties:
-            activationEpoch:
-              type:
-              - number
-              - 'null'
-              description: Epoch when the validator became active
-            activationTimestamp:
-              type:
-              - number
-              - 'null'
-              description: Unix timestamp of activation
-            exitEpoch:
-              type:
-              - number
-              - 'null'
-              description: Epoch when the validator exited or will exit
-            withdrawableEpoch:
-              type:
-              - number
-              - 'null'
-              description: Epoch when withdrawal becomes possible
-        balance:
-          type: object
-          properties:
-            actual:
-              type: string
-              description: Current balance in wei
-            effective:
-              type: string
-              description: Effective balance in wei (used for reward/penalty calculations)
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorRewardSummary'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of matching buckets
+        pages:
+          type: number
+          description: Total number of pages
+    ValidatorDeposit:
+      type: object
+      properties:
+        slot:
+          type: number
+          description: Slot in which the deposit was included
+        epoch:
+          type: number
+          description: Epoch containing the slot
+        timestamp:
+          type: number
+          description: Unix timestamp of the deposit
+        amount:
+          type: string
+          description: Deposited amount in wei
+        depositIndex:
+          type: number
+          description: Global deposit contract index
         withdrawalCredentials:
-          type: object
-          properties:
-            prefix:
-              type: number
-              description: Credential prefix byte (0 = BLS, 1 = EVM address)
-            credential:
-              type: string
-              description: Full credential hex string
-            address:
-              type:
-              - string
-              - 'null'
-              description: EVM withdrawal address (0x01 prefix only, otherwise null)
+          type: string
+          description: Full withdrawal credential hex string
+        withdrawalAddress:
+          type:
+          - string
+          - 'null'
+          description: EVM withdrawal address (0x01 prefix only, otherwise null)
   securitySchemes:
     bearerAuth:
       type: http
