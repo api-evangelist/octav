@@ -559,53 +559,6 @@ paths:
       security:
       - bearerAuth: []
 components:
-  responses:
-    BadRequest:
-      description: Input validation failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-    Unauthorized:
-      description: Missing or invalid Bearer token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Unauthorized
-    BeaconForbidden:
-      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Beacon access requires enterprise subscription. Contact sales.
-    InternalServerError:
-      description: Upstream beacon data error.
-      content:
-        text/plain:
-          schema:
-            type: string
-            example: Error fetching validator details
-    ValidatorNotFound:
-      description: Validator does not exist on mainnet.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Validator not found for index 99999999
   schemas:
     PaginatedValidatorDeposits:
       type: object
@@ -623,6 +576,129 @@ components:
         totalRows:
           type: number
           description: Total number of deposits
+        pages:
+          type: number
+          description: Total number of pages
+    ValidatorRewardSummary:
+      type: object
+      properties:
+        epochStart:
+          type: number
+          description: First epoch in this bucket
+        epochEnd:
+          type: number
+          description: Last epoch in this bucket
+        timestampStart:
+          type: number
+          description: Unix timestamp of bucket start
+        timestampEnd:
+          type: number
+          description: Unix timestamp of bucket end
+        dateStart:
+          type: string
+          description: ISO date string of bucket start
+        dateEnd:
+          type: string
+          description: ISO date string of bucket end
+        consensusReward:
+          type: string
+          description: Consensus layer reward in wei
+        consensusPotentialReward:
+          type: string
+          description: Maximum possible consensus reward in wei
+        consensusEfficiency:
+          type:
+          - number
+          - 'null'
+          description: Ratio of actual to potential consensus reward (0–1), or null if not computable
+        executionReward:
+          type: string
+          description: Execution layer (MEV + tips) reward in wei
+        attestationsIncluded:
+          type: number
+          description: Number of attestations included on-chain
+        attestationsMissed:
+          type: number
+          description: Number of attestations missed
+        syncParticipations:
+          type: number
+          description: Sync committee participations
+        syncMissed:
+          type: number
+          description: Sync committee slots missed
+        proposedBlocks:
+          type: number
+          description: Blocks proposed
+        missedBlocks:
+          type: number
+          description: Block proposals missed
+        mevBlocks:
+          type: number
+          description: Blocks proposed with MEV
+        endEffectiveBalance:
+          type: string
+          description: Effective balance at end of bucket in wei
+    ValidatorDeposit:
+      type: object
+      properties:
+        slot:
+          type: number
+          description: Slot in which the deposit was included
+        epoch:
+          type: number
+          description: Epoch containing the slot
+        timestamp:
+          type: number
+          description: Unix timestamp of the deposit
+        amount:
+          type: string
+          description: Deposited amount in wei
+        depositIndex:
+          type: number
+          description: Global deposit contract index
+        withdrawalCredentials:
+          type: string
+          description: Full withdrawal credential hex string
+        withdrawalAddress:
+          type:
+          - string
+          - 'null'
+          description: EVM withdrawal address (0x01 prefix only, otherwise null)
+    PaginatedValidatorWithdrawals:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorWithdrawal'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of withdrawals
+        pages:
+          type: number
+          description: Total number of pages
+    PaginatedValidatorRewards:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorRewardSummary'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of matching buckets
         pages:
           type: number
           description: Total number of pages
@@ -720,129 +796,53 @@ components:
               - string
               - 'null'
               description: EVM withdrawal address (0x01 prefix only, otherwise null)
-    PaginatedValidatorWithdrawals:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorWithdrawal'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of withdrawals
-        pages:
-          type: number
-          description: Total number of pages
-    ValidatorRewardSummary:
-      type: object
-      properties:
-        epochStart:
-          type: number
-          description: First epoch in this bucket
-        epochEnd:
-          type: number
-          description: Last epoch in this bucket
-        timestampStart:
-          type: number
-          description: Unix timestamp of bucket start
-        timestampEnd:
-          type: number
-          description: Unix timestamp of bucket end
-        dateStart:
-          type: string
-          description: ISO date string of bucket start
-        dateEnd:
-          type: string
-          description: ISO date string of bucket end
-        consensusReward:
-          type: string
-          description: Consensus layer reward in wei
-        consensusPotentialReward:
-          type: string
-          description: Maximum possible consensus reward in wei
-        consensusEfficiency:
-          type:
-          - number
-          - 'null'
-          description: Ratio of actual to potential consensus reward (0–1), or null if not computable
-        executionReward:
-          type: string
-          description: Execution layer (MEV + tips) reward in wei
-        attestationsIncluded:
-          type: number
-          description: Number of attestations included on-chain
-        attestationsMissed:
-          type: number
-          description: Number of attestations missed
-        syncParticipations:
-          type: number
-          description: Sync committee participations
-        syncMissed:
-          type: number
-          description: Sync committee slots missed
-        proposedBlocks:
-          type: number
-          description: Blocks proposed
-        missedBlocks:
-          type: number
-          description: Block proposals missed
-        mevBlocks:
-          type: number
-          description: Blocks proposed with MEV
-        endEffectiveBalance:
-          type: string
-          description: Effective balance at end of bucket in wei
-    PaginatedValidatorRewards:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorRewardSummary'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of matching buckets
-        pages:
-          type: number
-          description: Total number of pages
-    ValidatorDeposit:
-      type: object
-      properties:
-        slot:
-          type: number
-          description: Slot in which the deposit was included
-        epoch:
-          type: number
-          description: Epoch containing the slot
-        timestamp:
-          type: number
-          description: Unix timestamp of the deposit
-        amount:
-          type: string
-          description: Deposited amount in wei
-        depositIndex:
-          type: number
-          description: Global deposit contract index
-        withdrawalCredentials:
-          type: string
-          description: Full withdrawal credential hex string
-        withdrawalAddress:
-          type:
-          - string
-          - 'null'
-          description: EVM withdrawal address (0x01 prefix only, otherwise null)
+  responses:
+    ValidatorNotFound:
+      description: Validator does not exist on mainnet.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Validator not found for index 99999999
+    BeaconForbidden:
+      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Beacon access requires enterprise subscription. Contact sales.
+    BadRequest:
+      description: Input validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    InternalServerError:
+      description: Upstream beacon data error.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Error fetching validator details
+    Unauthorized:
+      description: Missing or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
   securitySchemes:
     bearerAuth:
       type: http
