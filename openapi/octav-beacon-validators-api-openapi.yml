@@ -560,25 +560,6 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    PaginatedValidatorDeposits:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorDeposit'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of deposits
-        pages:
-          type: number
-          description: Total number of pages
     ValidatorRewardSummary:
       type: object
       properties:
@@ -638,91 +619,6 @@ components:
         endEffectiveBalance:
           type: string
           description: Effective balance at end of bucket in wei
-    ValidatorDeposit:
-      type: object
-      properties:
-        slot:
-          type: number
-          description: Slot in which the deposit was included
-        epoch:
-          type: number
-          description: Epoch containing the slot
-        timestamp:
-          type: number
-          description: Unix timestamp of the deposit
-        amount:
-          type: string
-          description: Deposited amount in wei
-        depositIndex:
-          type: number
-          description: Global deposit contract index
-        withdrawalCredentials:
-          type: string
-          description: Full withdrawal credential hex string
-        withdrawalAddress:
-          type:
-          - string
-          - 'null'
-          description: EVM withdrawal address (0x01 prefix only, otherwise null)
-    PaginatedValidatorWithdrawals:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorWithdrawal'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of withdrawals
-        pages:
-          type: number
-          description: Total number of pages
-    PaginatedValidatorRewards:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidatorRewardSummary'
-        offset:
-          type: number
-          description: Current pagination offset
-        limit:
-          type: number
-          description: Records per page
-        totalRows:
-          type: number
-          description: Total number of matching buckets
-        pages:
-          type: number
-          description: Total number of pages
-    ValidatorWithdrawal:
-      type: object
-      properties:
-        slot:
-          type: number
-          description: Slot in which the withdrawal was processed
-        epoch:
-          type: number
-          description: Epoch containing the slot
-        timestamp:
-          type: number
-          description: Unix timestamp of the withdrawal
-        amount:
-          type: string
-          description: Withdrawn amount in wei
-        address:
-          type: string
-          description: EVM address that received the withdrawal
-        index:
-          type: number
-          description: Validator index
     ValidatorDetails:
       type: object
       properties:
@@ -796,27 +692,111 @@ components:
               - string
               - 'null'
               description: EVM withdrawal address (0x01 prefix only, otherwise null)
+    PaginatedValidatorDeposits:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorDeposit'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of deposits
+        pages:
+          type: number
+          description: Total number of pages
+    PaginatedValidatorWithdrawals:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorWithdrawal'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of withdrawals
+        pages:
+          type: number
+          description: Total number of pages
+    PaginatedValidatorRewards:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorRewardSummary'
+        offset:
+          type: number
+          description: Current pagination offset
+        limit:
+          type: number
+          description: Records per page
+        totalRows:
+          type: number
+          description: Total number of matching buckets
+        pages:
+          type: number
+          description: Total number of pages
+    ValidatorWithdrawal:
+      type: object
+      properties:
+        slot:
+          type: number
+          description: Slot in which the withdrawal was processed
+        epoch:
+          type: number
+          description: Epoch containing the slot
+        timestamp:
+          type: number
+          description: Unix timestamp of the withdrawal
+        amount:
+          type: string
+          description: Withdrawn amount in wei
+        address:
+          type: string
+          description: EVM address that received the withdrawal
+        index:
+          type: number
+          description: Validator index
+    ValidatorDeposit:
+      type: object
+      properties:
+        slot:
+          type: number
+          description: Slot in which the deposit was included
+        epoch:
+          type: number
+          description: Epoch containing the slot
+        timestamp:
+          type: number
+          description: Unix timestamp of the deposit
+        amount:
+          type: string
+          description: Deposited amount in wei
+        depositIndex:
+          type: number
+          description: Global deposit contract index
+        withdrawalCredentials:
+          type: string
+          description: Full withdrawal credential hex string
+        withdrawalAddress:
+          type:
+          - string
+          - 'null'
+          description: EVM withdrawal address (0x01 prefix only, otherwise null)
   responses:
-    ValidatorNotFound:
-      description: Validator does not exist on mainnet.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Validator not found for index 99999999
-    BeaconForbidden:
-      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Beacon access requires enterprise subscription. Contact sales.
     BadRequest:
       description: Input validation failed
       content:
@@ -843,6 +823,26 @@ components:
               message:
                 type: string
                 example: Unauthorized
+    BeaconForbidden:
+      description: Forbidden — beacon access requires enterprise subscription. Contact sales.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Beacon access requires enterprise subscription. Contact sales.
+    ValidatorNotFound:
+      description: Validator does not exist on mainnet.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Validator not found for index 99999999
   securitySchemes:
     bearerAuth:
       type: http
